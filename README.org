@@ -1,0 +1,4 @@
+
+* About
+
+Sucha's emacs configuration.
