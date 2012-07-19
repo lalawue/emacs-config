@@ -1,4 +1,4 @@
 
 * About
 
-Sucha's emacs configuration.
+Sucha's emacs configuration, rename to ~/.elisp
