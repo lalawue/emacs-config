@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <12/07/18 15:46>
+;; Time-stamp: <13/08/11 19:01>
 
 ;;{{{ Global Settings
 
@@ -70,15 +70,22 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(default ((t (:stipple nil :background "black" :foreground "gray85" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 123 :width normal :family "courier new"))))
+ ;; '(default ((t (:stipple nil :background "black" :foreground "gray85" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
+ '(default ((t (:stipple nil :background "darkslategrey" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
  '(cursor ((t (:background "yellow2" :foreground "black"))) t)
- '(fringe ((((class color) (background dark)) (:background "black" :foreground "gray35"))))
+ ;; '(fringe ((((class color) (background dark)) (:background "black" :foreground "gray35"))))
+ '(fringe ((((class color) (background dark)) (:background "darkslategrey" :foreground "gray60"))))
  '(hl-line ((t (:background "grey13"))))
  '(mode-line ((((type x w32 mac) (class color)) (:background "black" :foreground "gray45"))))
- '(mode-line-inactive ((default (:background "black" :foreground "gray33")) (((class color) (min-colors 88) (background dark)) nil)))
+ ;; '(mode-line-inactive ((default (:background "black" :foreground "gray33")) (((class color) (min-colors 88) (background dark)) nil)))
+ '(mode-line-inactive ((default (:background "darkslategrey" :foreground "gray55")) (((class color) (min-colors 88) (background dark)) nil)))
  '(region ((((class color) (background dark)) (:background "yellow4"))))
  '(header-line ((default (:inherit mode-line)) (((class color grayscale) (background dark)) (:background "black" :foreground "grey40" :box nil))))
  )
+
+(add-to-list 'load-path (expand-file-name "~/.elisp/color-theme"))
+;; (require 'color-theme)
+;; (load-theme 'tomorrow-night-blue)
 
 ;; 
 ;; Basic setting
@@ -101,12 +108,6 @@
 (require 'sr-speedbar)
 
 
-;; icicles-mode
-;; 
-;; (add-to-list 'load-path
-;;              (expand-file-name "~/.elisp/icicles/"))
-;; (require 'icicles-mode)
-
 ;; unicad, see KNOWN BUGS of unicad
 ;; 
 (require 'unicad)
@@ -123,9 +124,9 @@
 ;;       header-date-format
 ;;       "%Y/%m/%d %H:%M")
 (setq header-copyright-notice
-      (format-time-string "Copyright (c) %Y suchang@star-net.cn. \n")
-      user-full-name
-      " Su Chang (suchang@star-net.cn)"
+      (format-time-string "Copyright (c) %Y chale.suu@gmail.com \n")
+      ;; user-full-name
+      ;; " Su Chang (suchang@star-net.cn)"
       header-date-format
       "%Y/%m/%d %H:%M")
 
@@ -179,6 +180,7 @@
                          (interactive) 
                          (manual-entry (current-word))))
 (global-set-key [(f3)] 'sucha-open/close-calendar)
+(global-set-key [(meta f2)] 'ns-toggle-fullscreen)
 
 ;; highlight-phrase
 ;;
@@ -283,9 +285,6 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
-;; psvn, better svn interfaces
-;;(require 'psvn)
-
 ;; mode line format
 ;; 
 (defun sucha-update-global-var ()
@@ -305,7 +304,7 @@
                    ((= day 7) "Sun"))))))
 
 (sucha-update-global-var)               ; update when loaded
-(run-at-time t 10			; repeat every 10s
+(run-at-time t 10                       ; repeat every 10s
 	     'sucha-update-global-var)
 
 ;; mode line format
@@ -316,7 +315,10 @@
             " <%b> "
             'sucha-update-time-string
             " (%l,%c,%P) "
-            'which-func-format
+            ;; 'which-func-format
+            "["
+            'which-func-current
+            "]"
             'vc-mode
             " %[{" 
             'mode-name
@@ -349,7 +351,7 @@
 (global-set-key [(meta f11)] 
                 '(lambda ()
                    (interactive) 
-                   (find-file "C:/Documents and Settings/Sucha/YUNIO/wiki/index.org")))
+                   (find-file "~/workport/wiki/index.org")))
 
 ;; focus parenthesis
 ;; 
@@ -386,94 +388,64 @@
 
 
 
-(require 'ctypes)                       ; ctypes
-(ctypes-auto-parse-mode 1)
-
-;; (require 'linum)
-;; (setq linum-format "%-4d")
-
-(defvar use-xref-but-gtags t "use xref but gtags")
-
-;; 
-;; Relative Faces
-;; 
-
-(when (not use-xref-but-gtags)
-    (custom-set-faces
-
-     ;; company faces
-     ;; 
-     '(company-expand-face ((t (:background "black" :foreground "orange2"))))
-     '(company-pseudo-tooltip-face ((t (:inherit default :background "black" :foreground "maroon3"))))
-     '(company-pseudo-tooltip-selection-face ((t (:background "gray15" :foreground "maroon3"))))
-     '(company-tooltip-selection-face ((t (:background "black" :foreground "orange"))))
-     '(company-last-expansion-face ((t (:background "black" :foreground "gray85"))))
-
-     ;; xgtags faces
-     ;; 
-     '(xgtags-file-face ((t (:foreground "salmon3" :weight bold))))
-     '(xgtags-match-face ((((class color) (background dark)) (:foreground "green3"))))
-     '(xgtags-line-number-face ((((class color) (background dark)) (:foreground "maroon3"))))
-     '(xgtags-line-face ((((class color) (background dark)) (:foreground "yellow3"))))
-     '(xgtags-file-selected-face ((t (:foreground "salmon3" :weight bold))))
-     '(xgtags-match-selected-face ((t (:foreground "green2" :weight bold))))
-     '(xgtags-line-selected-face ((t (:foreground "yellow2" :weight bold))))
-     '(xgtags-line-number-selected-face ((t (:foreground "maroon2" :weight bold))))
-     )
-  )
-
 ;; 
 ;; Tag Browsing and Completions settings
 ;; 
 
 ;; tag modes
 ;; 
-(when (not use-xref-but-gtags)
-    (require 'xgtags) ; xgtags better face
-  ;; (autoload 'gtags-mode "gtags" "" t)     ; gtags
-  ;; (require 'xcscope)                      ; xcscope
+
+;; yasnippet
+(add-to-list 'load-path "~/.elisp/yasnippet")
+(require 'yasnippet)
+(setq yas/trigger-key (kbd "C-c <kp-multiply>"))
+;;(yas/initialize)
+
+;; This is where your snippets will lie.
+(setq yas/root-directory '("~/.emacs.d/snippets"))
+;; (mapc 'yas/load-directory yas/root-directory)
+
+;; auto-complete
+(add-to-list 'load-path (expand-file-name "~/.elisp/auto-complete"))
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories (expand-file-name "~/.elisp/auto-complete/dict/"))
+
+;; for Xcode pragma mark
+(require 'anything)
+(require 'anything-config)
+
+(defvar anything-c-source-objc-headline
+  '((name . "Objective-C Headline")
+    (headline  "^[-+@]\\|^#pragma mark")
+))
+
+(defun objc-headline ()
+  (interactive)
+  ;; Set to 500 so it is displayed even if all methods are not narrowed down.
+  (let ((anything-candidate-number-limit 500))
+    (anything-other-buffer '(anything-c-source-objc-headline)
+                           "*ObjC Headline*")))
+
+(global-set-key "\C-xp" 'objc-headline)
 
 
-  ;; company mode, better completion
-  ;; 
-  (add-to-list 'load-path
-               (expand-file-name "~/.elisp/company/"))
-  (require 'company-mode)
-  (require 'company-bundled-completions) ; mass install
-  (require 'company-gtags-completions)
-
-  (defun sucha-install-company-completion-rules ()
-    "gtags and dabbref completions for C and C++ mode"
-    (company-clear-completion-rules)
-
-    ;;   (company-install-dabbrev-completions)
-    (company-install-file-name-completions)
-    (eval-after-load 'company-gtags-completions
-      '(company-install-gtags-completions))
-    )
-  )
-
-;; Xrefactory configuration part ;;
-;; some Xrefactory defaults can be set here
-;;
-(when use-xref-but-gtags
-  (defvar xref-current-project nil "none")    ;; can be also "my_project_name"
-;;  (defvar xref-key-binding 'global)    ;; can be also 'local or 'none
-  (defvar xref-key-binding 'none "none") ;; can be also 'local or 'none
-  (setq load-path (cons "~/.xrefdir/emacs" load-path))
-  (setq exec-path (cons "~/.xrefdir" exec-path))
-  (load "xrefactory")
-  ;; end of Xrefactory configuration part ;;
-  (message "xrefactory loaded")
-  (global-set-key (kbd "C-,") (lambda ()
-                                  (interactive)
-                                  (if (eq last-command 'sucha-xref-lev/find-definition)
-                                      (xref-pop-and-return))
-                                  (delete-other-windows)))
-  )
+;; document viewer
+(add-to-list 'load-path (expand-file-name "~/.elisp/w3m/"))
+(add-to-list 'exec-path "/usr/local/bin")
+(require 'w3m)
+(require 'w3m-load)
 
 
+(require 'xcode-document-viewer)
+(setq xcdoc:document-path
+      "/Users/user/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.AppleiOS6.1.iOSLibrary.docset/")
+(setq xcdoc:open-w3m-other-buffer t)
 
+(defun xcdoc:docsetutil-command ()
+ (or (executable-find "docsetutil")
+     (and (file-executable-p "/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil")
+          "/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil")
+     (error "docsetutil command is not found. Perhaps you dont have Xcode man.")))
 
 ;; 
 ;; Hooks and Key bindings
@@ -500,111 +472,10 @@
    ;; 
    (auto-make-header)
 
-   ;; better tag handle
-   ;; 
-;;   (define-key c-mode-base-map [return] (lambda () 
-;;                                          (interactive)
-;;                                          (align-current)
-;;                                          (newline)))
-   (when (not use-xref-but-gtags)
-     (xgtags-mode 1)
-;;      (company-mode 1)
-;;      (sucha-install-company-completion-rules) ; refers to the function
-     ;;    (gtags-mode 1)
-     ;;    (company-install-bundled-completions-rules) ; mass rules
-     ;;    (require 'ifdef)                     ; mark ifdef color
-     ;;    (define-key c-mode-base-map "\C-c\C-i" 'mark-ifdef)
-     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
-
-     ;; for gtags
-     ;; 
-     (define-key c-mode-base-map (kbd "C-.") 'xgtags-find-tag-from-here)
-     (define-key c-mode-base-map (kbd "C-,") 'delete-other-windows)
-     (define-key c-mode-base-map (kbd "M-.") 'xgtags-find-symbol)
-     (define-key c-mode-base-map (kbd "M-,") 'xgtags-find-pattern)
-     (define-key c-mode-base-map (kbd "C-M-.") 'xgtags-find-rtag)
-     (define-key c-mode-base-map (kbd "C-M-,") 'grep-find)
-     (define-key c-mode-base-map (kbd "C-M-/") 'xgtags-find-tag)
-     (define-key c-mode-base-map (kbd "M-p") 'xgtags-pop-stack)
-
-     ;; c base mode keys
-     ;; 
-     (define-key c-mode-base-map [f7] 'sucha-generate-gtags-files)
-     (define-key c-mode-base-map [C-f7] '(lambda () (interactive)
-                                           (when gv-sucha-update-gtags-timer
-                                             (message "cancel timer %s" gv-sucha-update-gtags-timer)
-                                             (cancel-timer gv-sucha-update-gtags-timer)
-                                             (setq gv-sucha-update-gtags-timer nil))))
-     (define-key c-mode-base-map [meda .] 'xgtags-find-symbol) ; fix
-     (define-key c-mode-base-map (kbd "M-p") 'xgtags-pop-stack)
-     )
-
    ;; hide-ifdef-mode
    ;; 
    ;;    (define-key hide-ifdef-mode-map "\C-z\C-d" 'hide-ifdef-block)
    ;;    (define-key hide-ifdef-mode-map "\C-z\C-s" 'show-ifdef-block)
-
-   ;; xref key bindings
-   ;; 
-   (when use-xref-but-gtags
-
-     ;; (define-key-after xref-browser-dialog-key-map "p" 'xref-browser-dialog-previous-reference t)
-     ;; (define-key-after xref-browser-dialog-key-map "n" 'xref-browser-dialog-next-reference)
-
-     (define-key c-mode-base-map (kbd "M-<return>") 'xref-completion)
-     ;;     (define-key c-mode-base-map [(control f8)] 'xref-ide-compile-run)
-
-     (define-key c-mode-base-map (kbd "C-.") 'xref-push-and-goto-definition)
-;;      (define-key c-mode-base-map [(control .)] 'sucha-xref-lev/find-definition)
-
-     (define-key c-mode-base-map (kbd "M-.") 'xref-push-and-goto-definition)
-     (define-key c-mode-base-map (kbd "M-,") 'sucha-xref-pop-and-delete)
-
-     (define-key c-mode-base-map (kbd "C-M-.") (lambda ()
-                                                 (interactive)
-                                                 (xref-browse-symbol)
-                                                 (other-window 1)
-                                                 (shrink-window (- (window-height) 16))))
-     (define-key c-mode-base-map (kbd "C-M-,") 'xref-push-name)
-     (define-key c-mode-base-map (kbd "C-M-/") 'xref-refactor)
-
-     (define-key c-mode-base-map [(meta j)] (lambda () 
-                                              (interactive)
-                                              (other-window 1)
-                                              (xref-alternative-next-reference)
-                                              (other-window 1)))
-     (define-key c-mode-base-map [(meta k)] (lambda ()
-                                              (interactive)
-                                              (other-window 1)
-                                              (xref-alternative-previous-reference)
-                                              (other-window 1)))
-
-;;      (define-key xref-completion-mode-map [(backtab)] 'previous-line)
-
-     ;;     (define-key c-mode-base-map (kbd "M-p") 'xref-pop-and-return)
-     (define-key c-mode-base-map (kbd "M-p") 'sucha-xref-pop-and-delete)
-
-     (define-key c-mode-base-map (kbd "M-s") 'c-indent-new-comment-line) ; indent comments
-
-     (defun sucha-xref-lev/find-definition ()
-       "show xref's definition in other small window."
-       (interactive)
-       (let ((pos (point)))
-         (split-window-vertically)
-         (other-window 1)
-         (shrink-window (- (window-height) 16))
-         (xref-push-and-goto-definition)
-         (other-window 1)
-         (goto-char pos)
-         ))
-
-     (defun sucha-xref-pop-and-delete ()
-       "pop and delete xref references window."
-       (interactive)
-       (xref-delete-window)
-       (xref-delete-window)
-       (xref-pop-and-return))
-     )
 
    ;; global key bindings
    ;; 
@@ -613,76 +484,6 @@
                                        (compile compile-command)))
    )
  t)
-
-(when (not use-xref-but-gtags)
-  
-  (defun sucha-update-gtags-files (&optional dir)
-    "update gtags files command"
-    (let ((current-dir default-directory))
-      (if dir
-          (cd dir)
-        (cd gv-sucha-gtag-dir))
-        (shell-command "gtags --gtagslabel gtags")
-      (xgtags-make-complete-list)
-      (cd current-dir)))
-
-  (defvar gv-sucha-update-gtags-timer nil
-    "global timer event to update gtags, invoke by f7, and C-f7
-    to cancel it. only valid in cc-mode")
-
-  (defun sucha-generate-gtags-files ()
-    "Generate gtags reference file for global."
-    (interactive)
-    (setq gv-sucha-gtag-dir
-          (read-from-minibuffer
-           "directory: "
-           default-directory))
-    (sucha-update-gtags-files gv-sucha-gtag-dir)
-    (when (not gv-sucha-update-gtags-timer)
-      (setq gv-sucha-update-gtags-timer
-            (run-at-time t 30 'sucha-update-gtags-files))
-      (message "establish timer %s" gv-sucha-update-gtags-timer)))
-
-;;;   ;; xgtags mode map
-;;;   ;; 
-;;;   (define-key xgtags-mode-map [(control .)] 'xgtags-find-tag-from-here)
-;;;   (define-key xgtags-mode-map [(control ,)] 'delete-other-windows)
-;;;   (define-key xgtags-mode-map [(meta .)] 'xgtags-find-symbol)
-;;;   (define-key xgtags-mode-map [(meta ,)] 'xgtags-find-pattern)
-;;;   (define-key xgtags-mode-map (kbd "C-M-.") 'xgtags-find-rtag)
-;;;   (define-key xgtags-mode-map (kbd "C-M-,") 'grep-find)
-;;;   (define-key xgtags-mode-map (kbd "C-M-/") 'xgtags-find-tag)
-;;;   (define-key xgtags-mode-map (kbd "M-p") 'xgtags-pop-stack)
-
-  ;; xgtags-select-mode-hook
-  ;; 
-  (add-hook
-   'xgtags-select-mode-hook
-   '(lambda ()
-      (define-key xgtags-select-mode-map [(control f)] 'forward-char)
-      (define-key xgtags-select-mode-map [(control b)] 'backward-char)
-      (define-key xgtags-select-mode-map [(meta p)] 'xgtags-pop-stack)
-      (define-key xgtags-select-mode-map (kbd "SPC")
-        'sucha-xgtags-select-tag-other-window))
-   )
-
-  ;; company mode map
-  ;; 
-  (define-key company-mode-map [(tab)] 'indent-for-tab-command)
-  (define-key company-mode-map [(meta j)] 'company-cycle)
-  (define-key company-mode-map [(meta k)] 'company-cycle-backwards)
-  (define-key company-mode-map [(backtab)] 'company-expand-common)
-  (define-key company-mode-map (kbd "M-SPC") 'company-expand-anything)
-  (define-key company-mode-map (kbd "M-<return>") 'company-expand-common) 
-
-  (defun sucha-xgtags-select-tag-other-window ()
-    "Selete gtag tag other window."
-    (interactive)
-    (xgtags-select-tag-near-point)
-    (delete-other-windows)
-    (split-window-vertically 12)
-    (switch-to-buffer "*xgtags*"))
-  )
 
 (defun sucha-smart-compile ()
     "Simply compile your file according to the file type."
@@ -708,14 +509,6 @@
 ;;}}}
 ;;{{{ Emacs-Lisp mode stuff
 
-;; company minor mode
-;; 
-;; (add-to-list 'load-path 
-;;              (expand-file-name "~/.elisp/company/"))
-;; (require 'company-mode)
-;; (require 'company-bundled-completions)
-
-
 ;; 
 ;; Hooks and Key bindings
 ;; 
@@ -729,57 +522,30 @@
    (setq tab-always-indent t)           ; always indent
    (highlight-parentheses-mode t)
 
-   ;; company
-   ;; 
-;;;    (company-clear-completion-rules)     ; clear first
-   
-;;;    (company-install-lisp-completions)
-;;;    (company-install-dabbrev-completions)
-;;;    (company-install-file-name-completions)
-
    ;; misc modes
    ;; 
    (hs-minor-mode t)
    (which-func-mode t)
-;;;    (company-mode 1)
 
    ;; 
    ;; auto make header
    (auto-make-header)
    ))
 
-;; lisp mode shared map
-;; 
-(define-key lisp-mode-shared-map [(C-f7)] 'sucha-generate-tag-table)
-(define-key lisp-mode-shared-map [(f7)] 'visit-tags-table)
-
 
 ;; tag handle
 ;; 
-(define-key lisp-mode-shared-map (kbd "C-.") '(lambda ()
+(define-key lisp-mode-shared-map [(control .)] '(lambda ()
                                                   (interactive)
                                                   (lev/find-tag t)))
-(define-key lisp-mode-shared-map (kbd "C-,") 'sucha-release-small-tag-window)
+(define-key lisp-mode-shared-map [(control ,)] 'sucha-release-small-tag-window)
 
-(define-key lisp-mode-shared-map (kbd "M-.") 'lev/find-tag)
-(define-key lisp-mode-shared-map (kbd "M-,") 'pop-tag-mark)
-(define-key lisp-mode-shared-map (kbd "M-p") 'pop-tag-mark)
+(define-key lisp-mode-shared-map [(meta .)] 'lev/find-tag)
+(define-key lisp-mode-shared-map [(meta ,)] 'pop-tag-mark)
+(define-key lisp-mode-shared-map [(meta p)] 'pop-tag-mark)
 (define-key lisp-mode-shared-map (kbd "C-M-/") 'find-tag)
 (define-key lisp-mode-shared-map (kbd "C-M-.") 'find-tag-regexp)
 (define-key lisp-mode-shared-map (kbd "C-M-,") 'igrep)
-
-(defun sucha-generate-tag-table ()
-  "Generate tag tables in certain directory."
-  (interactive)
-  (with-temp-buffer
-    (shell-command
-     (concat "find "
-	     (read-from-minibuffer "generate tags in: " 
-				   default-directory)
-	     " -name \""
-	     (read-from-minibuffer "suffix: ")
-	     "\" | xargs etags "))
-    (buffer-name)))
 
 (defun lev/find-tag (&optional show-only)
   "Show tag in other window with no prompt in minibuf."
@@ -805,6 +571,23 @@
   (message "Kill other window down, :)"))
 
 ;;}}}
+;;{{{ lisp mode
+;;(add-to-list 'load-path "~/.emacs.d/slime/")
+(add-to-list 'load-path "~/.elisp/slime-2013-02-23/")
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
+(require 'slime-autoloads)
+(setq slime-net-coding-system 'utf-8-unix)
+(slime-setup '(slime-fancy))
+
+;; SLIME & Swank
+;; (loadlib "swank")
+;; (swank:create-server :port 4006 :style :spawn :dont-close t)
+ 
+;; (loadlib "Your-Project")
+;; (Your-Project:start-server)
+
+;;}}}
+
 ;;{{{ CSS mode
 
 (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
@@ -816,9 +599,11 @@
 ;;}}}
 ;;{{{ Dired and Ido
 
-
-;; active ido mode
+;; ido and cl
 ;; 
+(require 'cl)                           ; ido neead cl?
+
+(require 'ido)				; ido
 (ido-mode t)
 
 
@@ -863,7 +648,7 @@
 ;; 
 (require 'ibuffer)
 
-(define-key ibuffer-mode-map (kbd "C-<return>") 
+(define-key ibuffer-mode-map [(control return)] 
   '(lambda () 
      (interactive)
      (ibuffer-visit-buffer)
@@ -884,6 +669,11 @@
 ;;                    (list-buffers)
 ;;                    (other-window 1)))
 
+;; (define-key Buffer-menu-mode-map [(control return)]
+;;   '(lambda ()
+;;      (interactive)
+;;      (Buffer-menu-this-window)
+;;      (delete-other-windows)))
 
 
 ;; cycle buffers
@@ -904,9 +694,7 @@
 (global-set-key [(control meta =)] (lambda () (interactive)
                                      (shrink-window-horizontally -1)))
 
-(when (not use-xref-but-gtags)
-  (global-set-key (kbd "C-,") 'delete-other-windows))
-
+(global-set-key [(control ,)] 'delete-other-windows)
 
 ;;}}}
 ;;{{{ My Temp attempt
@@ -923,11 +711,11 @@
 (if (string-equal system-type "windows-nt")
   (setq maxima-command "D:/Program Files/Maxima-5.18.1/bin/maxima.bat"))
 
-
 ;;}}}
 ;;{{{ Emacs-Wiki 
 
-(when (string-equal system-type "windows-nt")
+(when (or (string-equal system-type "windows-nt")
+          (string-equal system-type "darwin"))
 
   ;;load emacs-wiki 
   ;; 
@@ -1003,7 +791,7 @@
        ;; personal information
        ;; 
        ("EmailMe" . "mailto: suchaaa@gmail.com") ;; email
-;;       ("GuestBook" . "../Guestbook.html")       ;; guestbook
+       ("GuestBook" . "../Guestbook.html")       ;; guestbook
        )))
    '(emacs-wiki-directories 
      (quote 
@@ -1236,19 +1024,30 @@
       (set-file-name-coding-system 'gbk) ; local coding
       (set buffer-file-coding-system 'utf-8-unix)
 ;;      (w32-send-sys-command #xf030)     ; maxmize windows
-      )
-
-     ;; if emacs 24
-     ;; 
-     ((= 24 current-version)
-
-      (load "fontset-win")
-      (huangq-fontset-monaco 13)
-
-      (set-file-name-coding-system 'gbk) ; local coding
-      (set buffer-file-coding-system 'utf-8-unix)
-;;      (w32-send-sys-command #xf030)     ; maxmize windows
       )))
+  )
+
+
+(when (eq system-type 'darwin)
+
+  (setq mac-option-modifier 'alt)
+  (setq mac-command-modifier 'meta)
+
+  ;; default Latin font (e.g. Consolas)
+  ;; (set-face-attribute 'default nil :family "Consolas")
+  (set-face-attribute 'default nil :family "Monaco")
+  ;; default font size (point * 10)
+  ;;
+  ;; WARNING!  Depending on the default font,
+  ;; if the size is not supported very well, the frame will be clipped
+  ;; so that the beginning of the buffer may not be visible correctly. 
+  ;; (set-face-attribute 'default nil :height 165)
+  (set-face-attribute 'default nil :height 130)
+  ;; use specific font for Korean charset.
+  ;; if you want to use different font size for specific charset,
+  ;; add :size POINT-SIZE in the font-spec.
+  (set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
+  ;; you may want to add different for other charset in this way.
   )
 
 ;;}}}
@@ -1273,4 +1072,4 @@
 ;;}}}
 
 ;; Sucha's dot_emacs ends here
-
+(put 'upcase-region 'disabled nil)
