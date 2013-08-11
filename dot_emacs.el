@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/08/11 21:41>
+;; Time-stamp: <13/08/11 21:42>
 
 ;;{{{ Global Settings
 
@@ -449,10 +449,6 @@
 
 
 ;; jump between source and header file
-(defun relative-extention (extension)
-  ()
-  )
-
 (defun c-base-mode-in-header-file ()
   (let* ((filename (buffer-file-name))
          (extension (car (last (split-string filename "\\.")))))
