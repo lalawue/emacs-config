@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/08/12 14:22>
+;; Time-stamp: <13/08/12 15:27>
 
 ;;{{{ Global Settings
 
@@ -470,23 +470,23 @@
 
 (require 'igrep)
 
-;; for Xcode pragma mark
+;; for Xcode pragma mark, and C/C++ functions
 (require 'anything)
 (require 'anything-config)
 
 (defvar anything-c-source-objc-headline
   '((name . "Objective-C Headline")
-    (headline  "^[-+@]\\|^#pragma mark")
+    (headline  "^[-+@]\\|^#pragma mark\\|FIXME")
 ))
 
 (defvar anything-c-source-c-headline
   '((name . "C Headline")
-    (headline  "^[A-Za-z_]+?[ A-Za-z_0-9\*]+[A-Za-z_0-9]+?(")
+    (headline  "^[A-Za-z_]+?[ A-Za-z_0-9\*]+[A-Za-z_0-9]+?(\\|FIXME")
 ))
 
 (defvar anything-c-source-cpp-headline
   '((name . "Cpp Headline")
-    (headline  "^[A-Za-z_]+?[ A-Za-z_:~0-9\*]+[A-Za-z_0-9]+?(")
+    (headline  "^[A-Za-z_]+?[ A-Za-z_:~0-9\*]+[A-Za-z_0-9]+?(\\|FIXME")
 ))
 
 (defun c-base-mode-headline ()
