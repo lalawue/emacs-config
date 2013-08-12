@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/08/11 21:42>
+;; Time-stamp: <13/08/12 14:22>
 
 ;;{{{ Global Settings
 
@@ -74,13 +74,13 @@
  '(default ((t (:stipple nil :background "darkslategrey" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
  '(cursor ((t (:background "yellow2" :foreground "black"))) t)
  ;; '(fringe ((((class color) (background dark)) (:background "black" :foreground "gray35"))))
- '(fringe ((((class color) (background dark)) (:background "darkslategrey" :foreground "gray60"))))
+ '(fringe ((((class color) (background darkslategrey)) (:background "darkslategrey" :foreground "gray60"))))
  '(hl-line ((t (:background "grey13"))))
  '(mode-line ((((type x w32 mac) (class color)) (:background "black" :foreground "gray45"))))
  ;; '(mode-line-inactive ((default (:background "black" :foreground "gray33")) (((class color) (min-colors 88) (background dark)) nil)))
- '(mode-line-inactive ((default (:background "darkslategrey" :foreground "gray55")) (((class color) (min-colors 88) (background dark)) nil)))
+ '(mode-line-inactive ((default (:background "darkslategrey" :foreground "gray55")) (((class color) (min-colors 88) (background darkslategrey)) nil)))
  '(region ((((class color) (background dark)) (:background "yellow4"))))
- '(header-line ((default (:inherit mode-line)) (((class color grayscale) (background dark)) (:background "black" :foreground "grey40" :box nil))))
+ '(header-line ((default (:inherit mode-line)) (((class color grayscale) (background darkslategrey)) (:background "black" :foreground "grey40" :box nil))))
  )
 
 (add-to-list 'load-path (expand-file-name "~/.elisp/color-theme"))
@@ -125,8 +125,8 @@
 ;;       "%Y/%m/%d %H:%M")
 (setq header-copyright-notice
       (format-time-string "Copyright (c) %Y chale.suu@gmail.com \n")
-      ;; user-full-name
-      ;; " Su Chang (suchang@star-net.cn)"
+      user-full-name
+      " Su Chang"
       header-date-format
       "%Y/%m/%d %H:%M")
 
@@ -207,17 +207,17 @@
 
 (setq hippie-expand-try-functions-list
       '( ;;senator-complete-symbol
-	try-expand-dabbrev
-	try-expand-dabbrev-visible
-	try-expand-dabbrev-all-buffers
-	try-expand-dabbrev-from-kill
-	try-complete-file-name-partially
-	try-complete-file-name
-	try-expand-all-abbrevs
-	try-expand-list
-	try-expand-line
-	try-complete-lisp-symbol-partially
-	try-complete-lisp-symbol))
+        try-expand-dabbrev
+        try-expand-dabbrev-visible
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-list
+        try-expand-line
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
 
 ;; bookmark
 ;; 
@@ -240,14 +240,7 @@
 
 ;; todo mode
 ;; 
-(global-set-key "\C-ct" 'todo-show)        ; switch to TODO buffer
-(global-set-key "\C-ci" 'todo-insert-item) ; insert new item
-
 (define-key text-mode-map "\C-c\i" 'sucha-insert-time-string)
-(global-set-key "\M-[" 'backward-paragraph)
-(global-set-key "\M-]" 'forward-paragraph)
-(global-set-key "\C-c\C-t" 'outline-toggle-children)
-
 (global-set-key "\C-w" 'clipboard-kill-region)
 
 (defun sucha-insert-time-string ()
@@ -410,23 +403,21 @@
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories (expand-file-name "~/.elisp/auto-complete/dict/"))
 
-;; for Xcode pragma mark
-(require 'anything)
-(require 'anything-config)
+(setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
 
-(defvar anything-c-source-objc-headline
-  '((name . "Objective-C Headline")
-    (headline  "^[-+@]\\|^#pragma mark")
-))
-
-(defun objc-headline ()
-  (interactive)
-  ;; Set to 500 so it is displayed even if all methods are not narrowed down.
-  (let ((anything-candidate-number-limit 500))
-    (anything-other-buffer '(anything-c-source-objc-headline)
-                           "*ObjC Headline*")))
-
-(global-set-key "\C-xp" 'objc-headline)
+;; (require 'auto-complete-clang-async)
+;; (defun ac-cc-mode-setup ()
+;;   (setq ac-clang-complete-executable "/usr/local/Cellar/emacs-clang-complete-async/0.5/bin/clang-complete")
+;;   (setq-default ac-sources '(ac-source-abbrev
+;;                              ac-source-dictionary
+;;                              ac-source-words-in-same-mode-buffers
+;;                              ac-source-clang-async))
+;;   (ac-clang-launch-completion-process))
+;; (defun my-ac-config ()
+;;   (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+;;   (add-hook 'auto-complete-mode-hook 'ac-common-setup)
+;;   (global-auto-complete-mode t))
+;; (my-ac-config)
 
 
 ;; document viewer
@@ -477,6 +468,43 @@
        (c-base-mode-file-jump-to-extension "cpp"))
     (c-base-mode-file-jump-to-extension "h")))
 
+(require 'igrep)
+
+;; for Xcode pragma mark
+(require 'anything)
+(require 'anything-config)
+
+(defvar anything-c-source-objc-headline
+  '((name . "Objective-C Headline")
+    (headline  "^[-+@]\\|^#pragma mark")
+))
+
+(defvar anything-c-source-c-headline
+  '((name . "C Headline")
+    (headline  "^[A-Za-z_]+?[ A-Za-z_0-9\*]+[A-Za-z_0-9]+?(")
+))
+
+(defvar anything-c-source-cpp-headline
+  '((name . "Cpp Headline")
+    (headline  "^[A-Za-z_]+?[ A-Za-z_:~0-9\*]+[A-Za-z_0-9]+?(")
+))
+
+(defun c-base-mode-headline ()
+  (interactive)
+  ;; Set to 500 so it is displayed even if all methods are not narrowed down.
+  (let ((anything-candidate-number-limit 500))
+    (cond
+     ((eq major-mode 'objc-mode) 
+      (anything-other-buffer '(anything-c-source-objc-headline)
+                             "*ObjC Headline*"))
+     ((eq major-mode 'c++-mode)
+      (anything-other-buffer '(anything-c-source-cpp-headline)
+                             "*Cpp Headline*"))
+     ((eq major-mode 'c-mode)
+      (anything-other-buffer '(anything-c-source-c-headline)
+                             "*C Headline*"))
+     )))
+
 
 ;; 
 ;; Hooks and Key bindings
@@ -485,7 +513,6 @@
 (add-hook
  'c-mode-common-hook
  (lambda ()
-
    ;; variables
    ;; 
    (setq tab-always-indent t)           ; always indent
@@ -496,7 +523,7 @@
    (hide-ifdef-mode t)
    (which-func-mode t)
    (c-toggle-hungry-state t)
-   ;;    (c-toggle-auto-state t)
+   ;; (c-toggle-auto-state t)
    (highlight-parentheses-mode t)
 
    ;; auto make header
@@ -513,8 +540,21 @@
    (define-key c-mode-base-map [C-f5] 'sucha-smart-compile)
    (define-key c-mode-base-map [f5] '(lambda () (interactive) 
                                        (compile compile-command)))
-   (define-key c-mode-base-map (kbd "C-c t") 'c-base-mode-jump-between-header-source)
- )
+
+   (define-key c-mode-base-map (kbd "M-[") 'c-base-mode-jump-between-header-source)
+   (define-key c-mode-base-map (kbd "M-]") 'c-base-mode-jump-between-header-source)
+
+   ;; tags
+   (define-key c-mode-base-map (kbd "C-.") 'lev/find-tag)
+   (define-key c-mode-base-map (kbd "C-,") 'pop-tag-mark)
+   (define-key c-mode-base-map (kbd "M-p") 'pop-tag-mark)
+   (define-key c-mode-base-map (kbd "M-n") 'tags-loop-continue)
+   (define-key c-mode-base-map (kbd "C-M-/") 'tags-search)
+   (define-key c-mode-base-map (kbd "C-M-.") 'find-tag-regexp)
+   (define-key c-mode-base-map (kbd "C-M-,") 'igrep)
+
+   (define-key c-mode-base-map (kbd "M-i") 'c-base-mode-headline)
+   )
  t)
 
 (defun sucha-smart-compile ()
@@ -562,22 +602,23 @@
    ;; 
    ;; auto make header
    (auto-make-header)
+
+   ;; tag handle
+   ;; 
+   (define-key lisp-mode-shared-map [(control .)] '(lambda ()
+                                                     (interactive)
+                                                     (lev/find-tag t)))
+   (define-key lisp-mode-shared-map [(control ,)] 'sucha-release-small-tag-window)
+
+   (define-key lisp-mode-shared-map [(meta .)] 'lev/find-tag)
+   (define-key lisp-mode-shared-map [(meta n)] 'tags-loop-continue)
+   (define-key lisp-mode-shared-map [(meta ,)] 'pop-tag-mark)
+   (define-key lisp-mode-shared-map [(meta p)] 'pop-tag-mark)
+   (define-key lisp-mode-shared-map (kbd "C-M-/") 'find-tag)
+   (define-key lisp-mode-shared-map (kbd "C-M-.") 'find-tag-regexp)
+   (define-key lisp-mode-shared-map (kbd "C-M-,") 'igrep)
    ))
 
-
-;; tag handle
-;; 
-(define-key lisp-mode-shared-map [(control .)] '(lambda ()
-                                                  (interactive)
-                                                  (lev/find-tag t)))
-(define-key lisp-mode-shared-map [(control ,)] 'sucha-release-small-tag-window)
-
-(define-key lisp-mode-shared-map [(meta .)] 'lev/find-tag)
-(define-key lisp-mode-shared-map [(meta ,)] 'pop-tag-mark)
-(define-key lisp-mode-shared-map [(meta p)] 'pop-tag-mark)
-(define-key lisp-mode-shared-map (kbd "C-M-/") 'find-tag)
-(define-key lisp-mode-shared-map (kbd "C-M-.") 'find-tag-regexp)
-(define-key lisp-mode-shared-map (kbd "C-M-,") 'igrep)
 
 (defun lev/find-tag (&optional show-only)
   "Show tag in other window with no prompt in minibuf."
