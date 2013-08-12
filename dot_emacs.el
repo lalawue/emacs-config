@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/08/12 15:27>
+;; Time-stamp: <13/08/12 17:23>
 
 ;;{{{ Global Settings
 
@@ -30,7 +30,6 @@
  '(time-stamp-format "%02y/%02m/%02d %02H:%02M")
  '(display-time-use-mail-icon nil)
  '(fill-column 72)
- '(frame-background-mode dark)
  '(global-font-lock-mode t nil (font-lock))
  '(global-mark-ring-max 35)
  '(kill-ring-max 200)
@@ -83,10 +82,6 @@
  '(header-line ((default (:inherit mode-line)) (((class color grayscale) (background darkslategrey)) (:background "black" :foreground "grey40" :box nil))))
  )
 
-(add-to-list 'load-path (expand-file-name "~/.elisp/color-theme"))
-;; (require 'color-theme)
-;; (load-theme 'tomorrow-night-blue)
-
 ;; 
 ;; Basic setting
 ;; 
@@ -96,8 +91,7 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)           ; yes or no == y/n
 
-(add-hook 'before-save-hook
-	  'time-stamp)                  ; load time-stamp
+(add-hook 'before-save-hook 'time-stamp) ; load time-stamp
 
 (require 'fold)                         ; fold mode instead of folding
 ;; (if (load "folding" 'nomessage 'noerror)
@@ -105,14 +99,13 @@
 
 ;; open speedbar in current frame on the right
 ;; 
-(require 'sr-speedbar)
+;; (require 'sr-speedbar)
 
 
 ;; unicad, see KNOWN BUGS of unicad
 ;; 
 (require 'unicad)
-(add-hook 'ido-kill-emacs-hook
-          'unicad-disable)
+(add-hook 'ido-kill-emacs-hook 'unicad-disable)
 
 ;; header2 support, auto insert or update file headers
 ;; 
@@ -147,7 +140,7 @@
         header-modification-date
         header-blank
 
-;;         header-rcs-id
+        ;; header-rcs-id
         header-end-line
 
         header-commentary
@@ -180,7 +173,13 @@
                          (interactive) 
                          (manual-entry (current-word))))
 (global-set-key [(f3)] 'sucha-open/close-calendar)
-(global-set-key [(meta f2)] 'ns-toggle-fullscreen)
+
+(defun toggle-frame-fullscreen () 
+  (interactive)
+  (set-frame-parameter nil 'fullscreen 
+                       (if (frame-parameter nil 'fullscreen) nil 'fullscreen)))
+;; (global-set-key [(meta f2)] 'ns-toggle-fullscreen) ; v23
+(global-set-key [(meta f2)] 'toggle-frame-fullscreen) ; v24
 
 ;; highlight-phrase
 ;;
@@ -227,8 +226,7 @@
 ;; open shell
 ;; 
 (global-set-key [f6] 'eshell)           ; open a shell window
-(global-set-key [(control f6)]
-                'sucha-open-shell-other-buffer)
+(global-set-key [(control f6)] 'sucha-open-shell-other-buffer)
 
 (defun sucha-open-shell-other-buffer ()
   "Open shell in other buffer"
@@ -296,9 +294,8 @@
                    ((= day 6) "Sat")
                    ((= day 7) "Sun"))))))
 
-(sucha-update-global-var)               ; update when loaded
-(run-at-time t 10                       ; repeat every 10s
-	     'sucha-update-global-var)
+(sucha-update-global-var)		    ; update when loaded
+(run-at-time t 10 'sucha-update-global-var) ; repeat every 10s
 
 ;; mode line format
 ;; 
@@ -364,6 +361,81 @@
  (define-key dired-mode-map (kbd "C-s") 'dired-isearch-forward)
  (define-key dired-mode-map (kbd "C-r") 'dired-isearch-backward)
  t)
+
+;;}}}
+;;{{{ System specific setting
+
+;; better grep under linux
+;; 
+(when (string-equal system-type "gnu/linux")
+  (require 'igrep)                        ; better grep
+  (require 'igrep-next-error))
+
+;; Font setting under windows
+;; 
+(when (string-equal system-type "windows-nt")
+
+  ;; "Set defferent font for emacs version."
+  ;; 
+  (let ((current-version
+         (string-to-number 
+          (substring (version) 10 12))))
+    (cond
+
+     ;; if emacs 22
+     ;; 
+     ((= 22 current-version)
+      (if 
+          (not (member 
+                '("-*-courier new-normal-r-*-*-16-*-*-*-c-*-fontset-chinese"
+                  . "fontset-chinese") fontset-alias-alist))
+          (progn
+            (create-fontset-from-fontset-spec
+             "-*-monaco-normal-r-*-*-14-*-*-*-c-*-fontset-chinese,
+              chinese-gbk:-*-ÐÂËÎÌå-normal-r-*-*-14-*-*-*-c-*-gbk*-*,
+              chinese-gb2312:-*-ÐÂËÎÌå-normal-r-*-*-16-*-*-*-c-*-gb2312*-*,
+              chinese-big5-1:-*-MingLiU-normal-r-*-*-16-*-*-*-c-*-big5*-*,
+              chinese-big5-2:-*-MingLiU-normal-r-*-*-16-*-*-*-c-*-big5*-*" t)
+            (setq default-frame-alist
+                  (append
+                   '((font . "fontset-chinese"))
+                   default-frame-alist)))))
+
+     ;; if emacs 23
+     ;; 
+     ((= 23 current-version)
+      
+      (load "fontset-win")
+      (huangq-fontset-monaco 13)
+
+      (set-file-name-coding-system 'gbk) ; local coding
+      (set buffer-file-coding-system 'utf-8-unix)
+;;      (w32-send-sys-command #xf030)     ; maxmize windows
+      )))
+  )
+
+
+(when (eq system-type 'darwin)
+
+  (setq mac-option-modifier 'alt)
+  (setq mac-command-modifier 'meta)
+
+  ;; default Latin font (e.g. Consolas)
+  ;; (set-face-attribute 'default nil :family "Consolas")
+  (set-face-attribute 'default nil :family "Monaco")
+  ;; default font size (point * 10)
+  ;;
+  ;; WARNING!  Depending on the default font,
+  ;; if the size is not supported very well, the frame will be clipped
+  ;; so that the beginning of the buffer may not be visible correctly. 
+  ;; (set-face-attribute 'default nil :height 165)
+  (set-face-attribute 'default nil :height 130)
+  ;; use specific font for Korean charset.
+  ;; if you want to use different font size for specific charset,
+  ;; add :size POINT-SIZE in the font-spec.
+  (set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
+  ;; you may want to add different for other charset in this way.
+  )
 
 ;;}}}
 ;;{{{ C/C++ mode stuff
@@ -585,42 +657,8 @@
 ;; Hooks and Key bindings
 ;; 
 
-(add-hook
- 'emacs-lisp-mode-hook
- (lambda ()
 
-   ;; variables
-   ;; 
-   (setq tab-always-indent t)           ; always indent
-   (highlight-parentheses-mode t)
-
-   ;; misc modes
-   ;; 
-   (hs-minor-mode t)
-   (which-func-mode t)
-
-   ;; 
-   ;; auto make header
-   (auto-make-header)
-
-   ;; tag handle
-   ;; 
-   (define-key lisp-mode-shared-map [(control .)] '(lambda ()
-                                                     (interactive)
-                                                     (lev/find-tag t)))
-   (define-key lisp-mode-shared-map [(control ,)] 'sucha-release-small-tag-window)
-
-   (define-key lisp-mode-shared-map [(meta .)] 'lev/find-tag)
-   (define-key lisp-mode-shared-map [(meta n)] 'tags-loop-continue)
-   (define-key lisp-mode-shared-map [(meta ,)] 'pop-tag-mark)
-   (define-key lisp-mode-shared-map [(meta p)] 'pop-tag-mark)
-   (define-key lisp-mode-shared-map (kbd "C-M-/") 'find-tag)
-   (define-key lisp-mode-shared-map (kbd "C-M-.") 'find-tag-regexp)
-   (define-key lisp-mode-shared-map (kbd "C-M-,") 'igrep)
-   ))
-
-
-(defun lev/find-tag (&optional show-only)
+(defun lev-find-tag (&optional show-only)
   "Show tag in other window with no prompt in minibuf."
   (interactive)
   (let ((default (funcall (or find-tag-default-function
@@ -643,6 +681,40 @@
     (goto-char pos))
   (message "Kill other window down, :)"))
 
+(add-hook
+ 'emacs-lisp-mode-hook
+ (lambda ()
+
+   ;; variables
+   ;; 
+   (setq tab-always-indent t)           ; always indent
+   (highlight-parentheses-mode t)
+
+   ;; misc modes
+   ;; 
+   (hs-minor-mode t)
+   (which-func-mode t)
+
+   ;; auto make header
+   ;; (auto-make-header)
+
+   ;; tag handle
+   ;; 
+   (define-key lisp-mode-shared-map [(control .)] '(lambda ()
+                                                     (lev-find-tag t)))
+   (define-key lisp-mode-shared-map (kbd "C-,") 'sucha-release-small-tag-window)
+
+   (define-key lisp-mode-shared-map [(meta .)] 'lev-find-tag)
+   (define-key lisp-mode-shared-map [(meta n)] 'tags-loop-continue)
+   (define-key lisp-mode-shared-map (kbd "M-,") 'pop-tag-mark)
+   (define-key lisp-mode-shared-map [(meta p)] 'pop-tag-mark)
+   (define-key lisp-mode-shared-map (kbd "C-M-/") 'find-tag)
+   (define-key lisp-mode-shared-map (kbd "C-M-.") 'find-tag-regexp)
+   (define-key lisp-mode-shared-map (kbd "C-M-,") 'igrep)
+   )
+ t)
+
+
 ;;}}}
 ;;{{{ lisp mode
 ;;(add-to-list 'load-path "~/.emacs.d/slime/")
@@ -660,7 +732,6 @@
 ;; (Your-Project:start-server)
 
 ;;}}}
-
 ;;{{{ CSS mode
 
 (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
@@ -708,7 +779,6 @@
   ;; 
   (add-hook 'dired-load-hook 'my-dired-init))
 
-
 ;;}}}
 ;;{{{ Frame, Window and Buffer handle
 
@@ -736,18 +806,23 @@
 
 ;; basic buffer list
 ;; 
-;; (global-set-key "\C-x\C-b" 
-;;                 '(lambda () 
-;;                    (interactive)
-;;                    (list-buffers)
-;;                    (other-window 1)))
+(global-set-key "\C-x\C-b" 
+                '(lambda () 
+                   (interactive)
+                   (list-buffers)
+                   (other-window 1)))
 
-;; (define-key Buffer-menu-mode-map [(control return)]
-;;   '(lambda ()
-;;      (interactive)
-;;      (Buffer-menu-this-window)
-;;      (delete-other-windows)))
+(add-hook
+ 'Buffer-menu-mode-hook
+ (lambda ()
 
+   (define-key Buffer-menu-mode-map [(control return)]
+     '(lambda ()
+        (interactive)
+        (Buffer-menu-this-window)
+        (delete-other-windows)))
+   )
+ t)
 
 ;; cycle buffers
 ;; 
@@ -767,7 +842,7 @@
 (global-set-key [(control meta =)] (lambda () (interactive)
                                      (shrink-window-horizontally -1)))
 
-(global-set-key [(control ,)] 'delete-other-windows)
+(global-set-key (kbd "C-,") 'delete-other-windows)
 
 ;;}}}
 ;;{{{ My Temp attempt
@@ -1049,81 +1124,6 @@
 
   )                                     ; windows-nt-special-setting
 ;;}}}
-;;{{{ System specific setting
-
-;; better grep under linux
-;; 
-(when (string-equal system-type "gnu/linux")
-  (require 'igrep)                        ; better grep
-  (require 'igrep-next-error))
-
-;; Font setting under windows
-;; 
-(when (string-equal system-type "windows-nt")
-
-  ;; "Set defferent font for emacs version."
-  ;; 
-  (let ((current-version
-         (string-to-number 
-          (substring (version) 10 12))))
-    (cond
-
-     ;; if emacs 22
-     ;; 
-     ((= 22 current-version)
-      (if 
-          (not (member 
-                '("-*-courier new-normal-r-*-*-16-*-*-*-c-*-fontset-chinese"
-                  . "fontset-chinese") fontset-alias-alist))
-          (progn
-            (create-fontset-from-fontset-spec
-             "-*-monaco-normal-r-*-*-14-*-*-*-c-*-fontset-chinese,
-              chinese-gbk:-*-ÐÂËÎÌå-normal-r-*-*-14-*-*-*-c-*-gbk*-*,
-              chinese-gb2312:-*-ÐÂËÎÌå-normal-r-*-*-16-*-*-*-c-*-gb2312*-*,
-              chinese-big5-1:-*-MingLiU-normal-r-*-*-16-*-*-*-c-*-big5*-*,
-              chinese-big5-2:-*-MingLiU-normal-r-*-*-16-*-*-*-c-*-big5*-*" t)
-            (setq default-frame-alist
-                  (append
-                   '((font . "fontset-chinese"))
-                   default-frame-alist)))))
-
-     ;; if emacs 23
-     ;; 
-     ((= 23 current-version)
-      
-      (load "fontset-win")
-      (huangq-fontset-monaco 13)
-
-      (set-file-name-coding-system 'gbk) ; local coding
-      (set buffer-file-coding-system 'utf-8-unix)
-;;      (w32-send-sys-command #xf030)     ; maxmize windows
-      )))
-  )
-
-
-(when (eq system-type 'darwin)
-
-  (setq mac-option-modifier 'alt)
-  (setq mac-command-modifier 'meta)
-
-  ;; default Latin font (e.g. Consolas)
-  ;; (set-face-attribute 'default nil :family "Consolas")
-  (set-face-attribute 'default nil :family "Monaco")
-  ;; default font size (point * 10)
-  ;;
-  ;; WARNING!  Depending on the default font,
-  ;; if the size is not supported very well, the frame will be clipped
-  ;; so that the beginning of the buffer may not be visible correctly. 
-  ;; (set-face-attribute 'default nil :height 165)
-  (set-face-attribute 'default nil :height 130)
-  ;; use specific font for Korean charset.
-  ;; if you want to use different font size for specific charset,
-  ;; add :size POINT-SIZE in the font-spec.
-  (set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
-  ;; you may want to add different for other charset in this way.
-  )
-
-;;}}}
 ;;{{{ Desktop and Session
 
 ;; record the open file history and defines the relative topic files
@@ -1145,4 +1145,3 @@
 ;;}}}
 
 ;; Sucha's dot_emacs ends here
-(put 'upcase-region 'disabled nil)
