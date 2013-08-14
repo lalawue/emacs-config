@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/08/12 17:23>
+;; Time-stamp: <13/08/14 10:31>
 
 ;;{{{ Global Settings
 
@@ -157,10 +157,6 @@
   (register-file-header-action "[ \t]Last Modified On[ \t]*: "
                                'update-last-modified-date))
 (add-hook 'write-file-hooks 'auto-update-file-header)
-
-;; lua mode
-(setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
-(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 
 ;; 
 ;; Global and Common Key biding
@@ -354,6 +350,9 @@
 
 ;; dired-isearch only search file-name
 ;; 
+(setq ls-lisp-use-insert-directory-program nil)
+(require 'ls-lisp)
+
 (require 'dired)
 (require 'dired-isearch)
 (add-hook
@@ -440,6 +439,8 @@
 ;;}}}
 ;;{{{ C/C++ mode stuff
 
+(setq auto-mode-alist (cons '("\\.mm$" . c++-mode) auto-mode-alist))
+
 ;; 
 ;; Styles 
 ;; 
@@ -476,6 +477,8 @@
 (add-to-list 'ac-dictionary-directories (expand-file-name "~/.elisp/auto-complete/dict/"))
 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
+
+(global-auto-complete-mode t)
 
 ;; (require 'auto-complete-clang-async)
 ;; (defun ac-cc-mode-setup ()
@@ -546,34 +549,42 @@
 (require 'anything)
 (require 'anything-config)
 
-(defvar anything-c-source-objc-headline
+(defvar anything-objc-headline
   '((name . "Objective-C Headline")
     (headline  "^[-+@]\\|^#pragma mark\\|FIXME")
 ))
 
-(defvar anything-c-source-c-headline
+(defvar anything-c-headline
   '((name . "C Headline")
     (headline  "^[A-Za-z_]+?[ A-Za-z_0-9\*]+[A-Za-z_0-9]+?(\\|FIXME")
 ))
 
-(defvar anything-c-source-cpp-headline
+(defvar anything-cpp-headline
   '((name . "Cpp Headline")
     (headline  "^[A-Za-z_]+?[ A-Za-z_:~0-9\*]+[A-Za-z_0-9]+?(\\|FIXME")
 ))
 
-(defun c-base-mode-headline ()
+(defvar anything-lua-headline
+  '((name . "Lua Headline")
+    (headline  "^local \\|^function \\|[A-Za-z]+?[A-Za-z0-9_.] +\{\\|FIXME")
+))
+
+(defun major-mode-headline ()
   (interactive)
   ;; Set to 500 so it is displayed even if all methods are not narrowed down.
   (let ((anything-candidate-number-limit 500))
     (cond
      ((eq major-mode 'objc-mode) 
-      (anything-other-buffer '(anything-c-source-objc-headline)
+      (anything-other-buffer '(anything-objc-headline)
                              "*ObjC Headline*"))
      ((eq major-mode 'c++-mode)
-      (anything-other-buffer '(anything-c-source-cpp-headline)
+      (anything-other-buffer '(anything-cpp-headline)
                              "*Cpp Headline*"))
      ((eq major-mode 'c-mode)
-      (anything-other-buffer '(anything-c-source-c-headline)
+      (anything-other-buffer '(anything-c-headline)
+                             "*C Headline*"))
+     ((eq major-mode 'lua-mode)
+      (anything-other-buffer '(anything-lua-headline)
                              "*C Headline*"))
      )))
 
@@ -617,7 +628,7 @@
    (define-key c-mode-base-map (kbd "M-]") 'c-base-mode-jump-between-header-source)
 
    ;; tags
-   (define-key c-mode-base-map (kbd "C-.") 'lev/find-tag)
+   (define-key c-mode-base-map (kbd "C-.") 'lev-find-tag)
    (define-key c-mode-base-map (kbd "C-,") 'pop-tag-mark)
    (define-key c-mode-base-map (kbd "M-p") 'pop-tag-mark)
    (define-key c-mode-base-map (kbd "M-n") 'tags-loop-continue)
@@ -625,7 +636,7 @@
    (define-key c-mode-base-map (kbd "C-M-.") 'find-tag-regexp)
    (define-key c-mode-base-map (kbd "C-M-,") 'igrep)
 
-   (define-key c-mode-base-map (kbd "M-i") 'c-base-mode-headline)
+   (define-key c-mode-base-map (kbd "M-i") 'major-mode-headline)
    )
  t)
 
@@ -740,6 +751,29 @@
       (append '(("\\.css$" . css-mode))
               auto-mode-alist))
 
+;;}}}
+;;{{{ Lua mode
+;; lua mode
+(setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+
+(add-hook
+ 'lua-mode-hook
+ (lambda ()
+   (define-key lua-mode-map [(control .)] 'lev-find-tag)
+   (define-key lua-mode-map (kbd "C-,") 'sucha-release-small-tag-window)
+
+   (define-key lua-mode-map [(meta .)] 'lev-find-tag)
+   (define-key lua-mode-map [(meta n)] 'tags-loop-continue)
+   (define-key lua-mode-map (kbd "M-,") 'pop-tag-mark)
+   (define-key lua-mode-map [(meta p)] 'pop-tag-mark)
+   (define-key lua-mode-map (kbd "C-M-/") 'find-tag)
+   (define-key lua-mode-map (kbd "C-M-.") 'find-tag-regexp)
+   (define-key lua-mode-map (kbd "C-M-,") 'igrep)
+
+   (define-key lua-mode-map (kbd "M-i") 'major-mode-headline)
+   )
+ t)
 ;;}}}
 ;;{{{ Dired and Ido
 
