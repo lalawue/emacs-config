@@ -1,4 +1,5 @@
 
 * About
 
-Sucha's emacs configuration, rename to ~/.elisp
+Sucha's emacs configuration, rename to ~/.elisp, and ln -s
+~/.elisp/dot_emacs ~/.emacs
