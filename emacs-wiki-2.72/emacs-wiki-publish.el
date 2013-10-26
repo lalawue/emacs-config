@@ -1308,8 +1308,10 @@ the file is published no matter what."
           (message "Creating publishing subdirectory %s"
                    publishing-directory)
           (make-directory publishing-directory 'parents)))
-      (when (and (not (emacs-wiki-private-p page))
-               (or force (file-newer-than-file-p file published)))
+      (when (file-newer-than-file-p file published)
+          ;; NO MORE PRIVATE PAGE NOW, by suchang, 2013/03/26
+          ;; (and (not (emacs-wiki-private-p page))
+          ;;      (or force (file-newer-than-file-p file published)))
         (let ((project emacs-wiki-current-project))
           (with-emacs-wiki-project project
             (funcall emacs-wiki-publish-function file published)))

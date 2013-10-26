@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/08/14 10:31>
+;; Time-stamp: <13/10/26 11:08>
 
 ;;{{{ Global Settings
 
@@ -110,16 +110,10 @@
 ;; header2 support, auto insert or update file headers
 ;; 
 (require 'header2)
-;; (setq header-copyright-notice
-;;       (format-time-string "Copyright (c) %Y suchaaa@gmail.com. \n")
-;;       user-full-name
-;;       " Su Chang (suchaaa@gmail.com)"
-;;       header-date-format
-;;       "%Y/%m/%d %H:%M")
 (setq header-copyright-notice
       (format-time-string "Copyright (c) %Y chale.suu@gmail.com \n")
       user-full-name
-      " Su Chang"
+      " lalawue"
       header-date-format
       "%Y/%m/%d %H:%M")
 
@@ -338,6 +332,9 @@
                 '(lambda ()
                    (interactive) 
                    (find-file "~/workport/wiki/index.org")))
+
+;; use fuzzy text search
+(setq org-link-search-must-match-exact-headline nil)
 
 ;; focus parenthesis
 ;; 
@@ -588,6 +585,19 @@
                              "*C Headline*"))
      )))
 
+(defun sucha-mode-auto-pair ()
+  (interactive)
+  (make-local-variable 'skeleton-pair-alist)
+  (setq skeleton-pair-alist  '(
+                               (?` ?` _ "''")
+                               (?\( _ ")")
+                               (?\[ _ "]")
+                               (?{ > _ ?} >)))
+  (setq skeleton-pair t)
+  (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "`") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "[") 'skeleton-pair-insert-maybe))
 
 ;; 
 ;; Hooks and Key bindings
@@ -613,12 +623,14 @@
    ;; 
    (auto-make-header)
 
+   (hs-minor-mode t)
+
    ;; hide-ifdef-mode
    ;; 
    ;;    (define-key hide-ifdef-mode-map "\C-z\C-d" 'hide-ifdef-block)
    ;;    (define-key hide-ifdef-mode-map "\C-z\C-s" 'show-ifdef-block)
 
-   ;; global key bindings
+   ;; mode key bindings
    ;; 
    (define-key c-mode-base-map [C-f5] 'sucha-smart-compile)
    (define-key c-mode-base-map [f5] '(lambda () (interactive) 
@@ -637,6 +649,8 @@
    (define-key c-mode-base-map (kbd "C-M-,") 'igrep)
 
    (define-key c-mode-base-map (kbd "M-i") 'major-mode-headline)
+
+   ;; (sucha-mode-auto-pair)
    )
  t)
 
@@ -722,6 +736,8 @@
    (define-key lisp-mode-shared-map (kbd "C-M-/") 'find-tag)
    (define-key lisp-mode-shared-map (kbd "C-M-.") 'find-tag-regexp)
    (define-key lisp-mode-shared-map (kbd "C-M-,") 'igrep)
+
+   ;; (sucha-mode-auto-pair)
    )
  t)
 
@@ -729,11 +745,11 @@
 ;;}}}
 ;;{{{ lisp mode
 ;;(add-to-list 'load-path "~/.emacs.d/slime/")
-(add-to-list 'load-path "~/.elisp/slime-2013-02-23/")
-(setq inferior-lisp-program "/usr/local/bin/sbcl")
-(require 'slime-autoloads)
-(setq slime-net-coding-system 'utf-8-unix)
-(slime-setup '(slime-fancy))
+;;(add-to-list 'load-path "~/.elisp/slime-2013-02-23/")
+;;(setq inferior-lisp-program "/usr/local/bin/sbcl")
+;;(require 'slime-autoloads)
+;;(setq slime-net-coding-system 'utf-8-unix)
+;;(slime-setup '(slime-fancy))
 
 ;; SLIME & Swank
 ;; (loadlib "swank")
@@ -754,6 +770,10 @@
 ;;}}}
 ;;{{{ Lua mode
 ;; lua mode
+(defadvice lua-electric-match (around last-command-char-fixup activate) 
+  (let ((last-command-char last-command-event)) 
+    ad-do-it))
+
 (setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 
