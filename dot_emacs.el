@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/10/26 11:08>
+;; Time-stamp: <13/10/30 22:58>
 
 ;;{{{ Global Settings
 
@@ -795,10 +795,9 @@
    )
  t)
 ;;}}}
-;;{{{ Dired and Ido
+;;{{{ Project and Dir
 
 ;; ido and cl
-;; 
 (require 'cl)                           ; ido neead cl?
 
 (require 'ido)				; ido
@@ -806,7 +805,6 @@
 
 
 ;; dired-single
-;; 
 (require 'dired-single)
 
 (defun my-dired-init ()
@@ -832,6 +830,15 @@
   ;; it's not loaded yet, so add our bindings to the load-hook
   ;; 
   (add-hook 'dired-load-hook 'my-dired-init))
+
+;; fiplr, find file in project
+(require 'fiplr)
+(setq fiplr-root-markers '(".git" ".svn"))
+(setq fiplr-ignored-globs 
+      '((directories (".git" ".svn"))
+        (files ("*.jpg" "*.png" "*.zip" "*~"))))
+(global-set-key (kbd "C-x f") 'fiplr-find-file)
+
 
 ;;}}}
 ;;{{{ Frame, Window and Buffer handle
