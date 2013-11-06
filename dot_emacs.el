@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/11/06 14:43>
+;; Time-stamp: <13/11/06 14:45>
 
 ;;{{{ Global Settings
 
@@ -904,9 +904,7 @@
                                      (shrink-window-horizontally -1)))
 
 (global-set-key (kbd "C-,") 'delete-other-windows)
-(global-set-key (kbd "C-x w") 
-                '(lambda () (interactive)
-                   delete-window))
+(global-set-key (kbd "C-x w") 'delete-window)
 
 ;;}}}
 ;;{{{ My Temp attempt
