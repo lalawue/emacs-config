@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/11/06 14:45>
+;; Time-stamp: <13/12/05 11:35>
 
 ;;{{{ Global Settings
 
@@ -65,11 +65,12 @@
 ;; 
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- ;; '(default ((t (:stipple nil :background "black" :foreground "gray85" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:stipple nil :background "black" :foreground "gray85" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
+ 
  '(default ((t (:stipple nil :background "darkslategrey" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
  '(cursor ((t (:background "yellow2" :foreground "black"))) t)
  ;; '(fringe ((((class color) (background dark)) (:background "black" :foreground "gray35"))))
@@ -86,6 +87,7 @@
 ;; Basic setting
 ;; 
 
+(setq max-speecpdl-size 10000)
 (add-to-list 'load-path 
              (expand-file-name "~/.elisp/"))    ; my *.el path
 
@@ -493,22 +495,22 @@
 
 
 ;; document viewer
-(add-to-list 'load-path (expand-file-name "~/.elisp/w3m/"))
-(add-to-list 'exec-path "/usr/local/bin")
-(require 'w3m)
-(require 'w3m-load)
+;; (add-to-list 'load-path (expand-file-name "~/.elisp/w3m/"))
+;; (add-to-list 'exec-path "/usr/local/bin")
+;; (require 'w3m)
+;; (require 'w3m-load)
 
 
-(require 'xcode-document-viewer)
-(setq xcdoc:document-path
-      "/Users/user/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.AppleiOS6.1.iOSLibrary.docset/")
-(setq xcdoc:open-w3m-other-buffer t)
+;; (require 'xcode-document-viewer)
+;; (setq xcdoc:document-path
+;;       "/Users/user/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.AppleiOS6.1.iOSLibrary.docset/")
+;; (setq xcdoc:open-w3m-other-buffer t)
 
-(defun xcdoc:docsetutil-command ()
- (or (executable-find "docsetutil")
-     (and (file-executable-p "/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil")
-          "/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil")
-     (error "docsetutil command is not found. Perhaps you dont have Xcode man.")))
+;; (defun xcdoc:docsetutil-command ()
+;;  (or (executable-find "docsetutil")
+;;      (and (file-executable-p "/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil")
+;;           "/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil")
+;;      (error "docsetutil command is not found. Perhaps you dont have Xcode man.")))
 
 
 ;; jump between source and header file
@@ -835,8 +837,8 @@
 (require 'fiplr)
 (setq fiplr-root-markers '(".git" ".svn"))
 (setq fiplr-ignored-globs 
-      '((directories (".git" ".svn"))
-        (files ("*.jpg" "*.png" "*.zip" "*~"))))
+    '((directories (".git" ".svn"))
+      (files ("*.jpg" "*.png" "*.zip" "*~"))))
 (global-set-key (kbd "C-x f") 'fiplr-find-file)
 
 
