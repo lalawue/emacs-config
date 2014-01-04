@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/01/04 16:47>
+;; Time-stamp: <14/01/04 17:08>
 
 ;;{{{ Global Settings
 
@@ -363,16 +363,8 @@
 
 ;; dired-isearch only search file-name
 ;; 
-(setq ls-lisp-use-insert-directory-program nil)
-(require 'ls-lisp)
-
 (require 'dired)
-(require 'dired-isearch)
-(add-hook
- 'dired-mode-hook
- (define-key dired-mode-map (kbd "C-s") 'dired-isearch-forward)
- (define-key dired-mode-map (kbd "C-r") 'dired-isearch-backward)
- t)
+
 
 ;;}}}
 ;;{{{ System specific setting
