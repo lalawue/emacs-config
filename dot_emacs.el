@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <13/12/05 11:35>
+;; Time-stamp: <14/01/04 16:47>
 
 ;;{{{ Global Settings
 
@@ -103,6 +103,17 @@
 ;; 
 ;; (require 'sr-speedbar)
 
+;; popwin
+(require 'popwin)
+(popwin-mode 1)
+
+;; direx
+(require 'direx)
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
+
+(push '(direx:direx-mode :position left :width 30 :dedicated t)
+      popwin:special-display-config)
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
 
 ;; unicad, see KNOWN BUGS of unicad
 ;; 
@@ -183,6 +194,9 @@
 (global-set-key [(control f8)] (lambda ()
                                  (interactive)
                                  (hi-lock-mode nil)))
+
+;; call global macro
+(global-set-key [(f7)] 'call-last-kbd-macro)
 
 (defun sucha-open/close-calendar ()
   "Auto open/close calendar buffer."
@@ -333,7 +347,7 @@
 (global-set-key [(meta f11)] 
                 '(lambda ()
                    (interactive) 
-                   (find-file "~/workport/wiki/index.org")))
+                   (find-file "~/misc/yun/sync/wiki/index.org")))
 
 ;; use fuzzy text search
 (setq org-link-search-must-match-exact-headline nil)
