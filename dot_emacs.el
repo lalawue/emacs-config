@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/01/04 17:08>
+;; Time-stamp: <14/01/05 00:19>
 
 ;;{{{ Global Settings
 
@@ -347,7 +347,7 @@
 (global-set-key [(meta f11)] 
                 '(lambda ()
                    (interactive) 
-                   (find-file "~/misc/yun/sync/wiki/index.org")))
+                   (find-file "~/workport/wiki/index.org")))
 
 ;; use fuzzy text search
 (setq org-link-search-must-match-exact-headline nil)
