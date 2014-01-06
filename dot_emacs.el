@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/01/05 00:19>
+;; Time-stamp: <14/01/07 03:51>
 
 ;;{{{ Global Settings
 
@@ -963,11 +963,11 @@
    '(emacs-wiki-anchor-on-word t)
    '(emacs-wiki-index-page "WikiIndex")
    '(emacs-wiki-journal-description "Lives and essay.")
-   '(emacs-wiki-journal-directory "~/workport/homesite/sources/blog")
+   '(emacs-wiki-journal-directory "~/workport/homepage/sources/blog")
    '(emacs-wiki-journal-icons-subdirectory "../images")
    '(emacs-wiki-journal-index-title-threshold t)
-   '(emacs-wiki-journal-publishing-directory "~/workport/homesite/publish/blog")
-   '(emacs-wiki-journal-rss-file-name "~/workport/homesite/publish/blog/rss.xml")
+   '(emacs-wiki-journal-publishing-directory "~/workport/homepage/publish/blog")
+   '(emacs-wiki-journal-rss-file-name "~/workport/homepage/publish/blog/rss.xml")
    '(emacs-wiki-journal-rss-about-prefix "http://suchang.net/blog/")
    '(emacs-wiki-journal-rss-link-prefix "http://suchang.net/blog/")
    '(emacs-wiki-journal-self-link-name "Permalink")
@@ -1013,16 +1013,16 @@
        )))
    '(emacs-wiki-directories 
      (quote 
-      ("~/workport/homesite/sources/blog"
-       "~/workport/homesite/sources/cs"
-       "~/workport/homesite/sources/live"
-       "~/workport/homesite/sources/muse"
-       "~/workport/homesite/sources/scratch"
-       "~/workport/homesite/sources/slack"))
+      ("~/workport/homepage/sources/blog"
+       "~/workport/homepage/sources/cs"
+       "~/workport/homepage/sources/live"
+       "~/workport/homepage/sources/muse"
+       "~/workport/homepage/sources/scratch"
+       "~/workport/homepage/sources/slack"))
      nil (emacs-wiki))
    ;; '(emacs-wiki-footer-date-format "")
    '(emacs-wiki-home-page "index")
-   '(emacs-wiki-home-project "homesite")
+   '(emacs-wiki-home-project "homepage")
    '(emacs-wiki-maintainer "mailto:suchaaa@gmail.com")
    '(emacs-wiki-markup-nonexistent-link t)
    '(emacs-wiki-mode-hook (quote
@@ -1035,56 +1035,56 @@
    '(emacs-wiki-projects
      (quote
       (("blog" ;; blog
-        (emacs-wiki-directories "~/workport/homesite/sources/blog/")
+        (emacs-wiki-directories "~/workport/homepage/sources/blog/")
         (emacs-wiki-project-server-prefix . "../blog/")
-        (emacs-wiki-publishing-directory . "~/workport/homesite/publish/blog/")
+        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/blog/")
         (emacs-wiki-home-page . "index")
         (emacs-wiki-index-page . "WikiIndex")
         (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.blog-header\")</lisp>")
         (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.blog-footer\")</lisp>"))
        ("cs" ;; small lab, or computer science
-        (emacs-wiki-directories "~/workport/homesite/sources/cs/")
+        (emacs-wiki-directories "~/workport/homepage/sources/cs/")
         (emacs-wiki-project-server-prefix . "../cs/")
-        (emacs-wiki-publishing-directory . "~/workport/homesite/publish/cs/")
+        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/cs/")
         (emacs-wiki-home-page . "index")
         (emacs-wiki-index-page . "WikiIndex")
         (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
         (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
        ("live" ;; about my life
-        (emacs-wiki-directories "~/workport/homesite/sources/live/")
+        (emacs-wiki-directories "~/workport/homepage/sources/live/")
         (emacs-wiki-project-server-prefix . "../live/")
-        (emacs-wiki-publishing-directory . "~/workport/homesite/publish/live/")
+        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/live/")
         (emacs-wiki-home-page . "index")
         (emacs-wiki-index-page . "WikiIndex")
         (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
         (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
        ("muse" ;; we need musing
-        (emacs-wiki-directories "~/workport/homesite/sources/muse/")
+        (emacs-wiki-directories "~/workport/homepage/sources/muse/")
         (emacs-wiki-project-server-prefix . "../muse/")
-        (emacs-wiki-publishing-directory . "~/workport/homesite/publish/muse/")
+        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/muse/")
         (emacs-wiki-home-page . "index")
         (emacs-wiki-index-page . "WikiIndex")
         (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
         (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
        ("scratch" ;; scratch, draft, anything
-        (emacs-wiki-directories "~/workport/homesite/sources/scratch/")
+        (emacs-wiki-directories "~/workport/homepage/sources/scratch/")
         (emacs-wiki-project-server-prefix . "../scratch/")
-        (emacs-wiki-publishing-directory . "~/workport/homesite/publish/scratch/")
+        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/scratch/")
         (emacs-wiki-home-page . "index")
         (emacs-wiki-index-page . "WikiIndex")
         (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
         (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
        ("slack" ;; here is Slackware
-        (emacs-wiki-directories "~/workport/homesite/sources/slack/")
+        (emacs-wiki-directories "~/workport/homepage/sources/slack/")
         (emacs-wiki-project-server-prefix . "../slack/")
-        (emacs-wiki-publishing-directory . "~/workport/homesite/publish/slack/")
+        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/slack/")
         (emacs-wiki-home-page . "index")
         (emacs-wiki-index-page . "WikiIndex")
         (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
         (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
        )))
    '(emacs-wiki-publish-url-coding-system (quote utf-8))
-   '(emacs-wiki-publishing-directory "~/workport/homesite/publish")
+   '(emacs-wiki-publishing-directory "~/workport/homepage/publish")
    '(emacs-wiki-publishing-file-prefix "")
    '(emacs-wiki-refresh-file-alist-p t)
    '(emacs-wiki-show-project-name-p t)
@@ -1188,7 +1188,7 @@
   (defun sucha-wiki-find-file ()
     "Find the wiki file in wiki directorys"
     (interactive)
-    (find-file (file-name-directory "~/workport/homesite/sources/")))
+    (find-file (file-name-directory "~/workport/homepage/sources/")))
 
   (global-set-key [(M-f12)] 'sucha-wiki-find-file)
 
