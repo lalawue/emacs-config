@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/01/12 18:42>
+;; Time-stamp: <14/01/20 22:25>
 
 ;;{{{ Global Settings
 
@@ -372,25 +372,18 @@
 ;;}}}
 ;;{{{ System specific setting
 
-;; better grep under linux
-;; 
-(when (string-equal system-type "gnu/linux")
-  (require 'igrep)                        ; better grep
-  (require 'igrep-next-error))
+(require 'grep+)
 
 ;; Font setting under windows
-;; 
 (when (string-equal system-type "windows-nt")
 
   ;; "Set defferent font for emacs version."
-  ;; 
   (let ((current-version
          (string-to-number 
           (substring (version) 10 12))))
     (cond
 
      ;; if emacs 22
-     ;; 
      ((= 22 current-version)
       (if 
           (not (member 
@@ -409,7 +402,6 @@
                    default-frame-alist)))))
 
      ;; if emacs 23
-     ;; 
      ((= 23 current-version)
       
       (load "fontset-win")
