@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/01/07 03:51>
+;; Time-stamp: <14/01/12 18:42>
 
 ;;{{{ Global Settings
 
@@ -103,13 +103,16 @@
 ;; 
 ;; (require 'sr-speedbar)
 
+
 ;; popwin
 (require 'popwin)
 (popwin-mode 1)
+(setq popwin:popup-window-position 'right)
+(setq popwin:popup-window-width 0.5)
 
 ;; direx
 (require 'direx)
-(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
+;;(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
 
 (push '(direx:direx-mode :position left :width 30 :dedicated t)
       popwin:special-display-config)
@@ -903,8 +906,7 @@
 ;; handle windows size
 ;; 
 (global-set-key [(control -)] 'shrink-window)
-(global-set-key [(control =)] (lambda () 
-                                (interactive)
+(global-set-key [(control =)] (lambda () (interactive)
                                 (shrink-window -1)))
 
 (global-set-key [(control meta -)] 'shrink-window-horizontally)
