@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/01/20 22:25>
+;; Time-stamp: <14/01/21 12:53>
 
 ;;{{{ Global Settings
 
@@ -543,8 +543,6 @@
        (c-base-mode-file-jump-to-extension "cpp"))
     (c-base-mode-file-jump-to-extension "h")))
 
-(require 'igrep)
-
 ;; for Xcode pragma mark, and C/C++ functions
 (require 'anything)
 (require 'anything-config)
@@ -649,7 +647,7 @@
    (define-key c-mode-base-map (kbd "M-n") 'tags-loop-continue)
    (define-key c-mode-base-map (kbd "C-M-/") 'tags-search)
    (define-key c-mode-base-map (kbd "C-M-.") 'find-tag-regexp)
-   (define-key c-mode-base-map (kbd "C-M-,") 'igrep)
+   (define-key c-mode-base-map (kbd "C-M-,") 'grep-find)
 
    (define-key c-mode-base-map (kbd "M-i") 'major-mode-headline)
 
@@ -738,7 +736,7 @@
    (define-key lisp-mode-shared-map [(meta p)] 'pop-tag-mark)
    (define-key lisp-mode-shared-map (kbd "C-M-/") 'find-tag)
    (define-key lisp-mode-shared-map (kbd "C-M-.") 'find-tag-regexp)
-   (define-key lisp-mode-shared-map (kbd "C-M-,") 'igrep)
+   (define-key lisp-mode-shared-map (kbd "C-M-,") 'grep-find)
 
    ;; (sucha-mode-auto-pair)
    )
@@ -792,7 +790,7 @@
    (define-key lua-mode-map [(meta p)] 'pop-tag-mark)
    (define-key lua-mode-map (kbd "C-M-/") 'find-tag)
    (define-key lua-mode-map (kbd "C-M-.") 'find-tag-regexp)
-   (define-key lua-mode-map (kbd "C-M-,") 'igrep)
+   (define-key lua-mode-map (kbd "C-M-,") 'grep-find)
 
    (define-key lua-mode-map (kbd "M-i") 'major-mode-headline)
    )
