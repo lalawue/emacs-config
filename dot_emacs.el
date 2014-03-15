@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/01/21 12:53>
+;; Time-stamp: <14/03/15 19:30>
 
 ;;{{{ Global Settings
 
@@ -228,12 +228,18 @@
         try-complete-lisp-symbol))
 
 ;; bookmark
-;; 
-(global-set-key (kbd "C-M-m") 'bookmark-set)
 (global-set-key (kbd "C-M-l") 'list-bookmarks)
 
+;;; bm.el --- Visible bookmarks in buffer.
+(require 'bm)
+(setq bm-highlight-style 'bm-highlight-only-fringe)
+(global-set-key (kbd "C-M-m") 'bm-toggle)
+(global-set-key (kbd "M-(") 'bm-previous)
+(global-set-key (kbd "M-)") 'bm-next)
+(global-set-key (kbd "C-M-]") 'bm-remove-all-all-buffers)
+
+
 ;; open shell
-;; 
 (global-set-key [f6] 'eshell)           ; open a shell window
 (global-set-key [(control f6)] 'sucha-open-shell-other-buffer)
 
