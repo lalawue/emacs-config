@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/03/15 19:30>
+;; Time-stamp: <14/03/15 19:40>
 
 ;;{{{ Global Settings
 
@@ -234,8 +234,8 @@
 (require 'bm)
 (setq bm-highlight-style 'bm-highlight-only-fringe)
 (global-set-key (kbd "C-M-m") 'bm-toggle)
-(global-set-key (kbd "M-(") 'bm-previous)
-(global-set-key (kbd "M-)") 'bm-next)
+(global-set-key (kbd "M-[") 'bm-previous)
+(global-set-key (kbd "M-]") 'bm-next)
 (global-set-key (kbd "C-M-]") 'bm-remove-all-all-buffers)
 
 
@@ -643,8 +643,7 @@
    (define-key c-mode-base-map [f5] '(lambda () (interactive) 
                                        (compile compile-command)))
 
-   (define-key c-mode-base-map (kbd "M-[") 'c-base-mode-jump-between-header-source)
-   (define-key c-mode-base-map (kbd "M-]") 'c-base-mode-jump-between-header-source)
+   (define-key c-mode-base-map (kbd "C-M-i") 'c-base-mode-jump-between-header-source)
 
    ;; tags
    (define-key c-mode-base-map (kbd "C-.") 'lev-find-tag)
