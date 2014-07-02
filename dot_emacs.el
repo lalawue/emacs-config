@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/03/15 19:40>
+;; Time-stamp: <14/07/02 21:56>
 
 ;;{{{ Global Settings
 
@@ -194,9 +194,9 @@
                           (concat "\\b" (current-word) "\\b")
                           'hi-blue)))
 
-(global-set-key [(control f8)] (lambda ()
-                                 (interactive)
-                                 (hi-lock-mode nil)))
+(global-set-key [(meta f8)] (lambda ()
+							  (interactive)
+							  (hi-lock-mode nil)))
 
 ;; call global macro
 (global-set-key [(f7)] 'call-last-kbd-macro)
@@ -452,8 +452,8 @@
 ;; 
 
 (setq c-default-style "linux")
-(setq-default indent-tabs-mode nil
-              c-basic-offset 4
+(setq-default indent-tabs-mode nil)
+(setq-default c-basic-offset 4
               tab-width 4)              ; no tab, only blank
 (c-set-offset 'case-label 4)
 ;; (setq tab-stop-list ())
@@ -763,6 +763,9 @@
  
 ;; (loadlib "Your-Project")
 ;; (Your-Project:start-server)
+
+(autoload 'glsl-mode "glsl-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
 
 ;;}}}
 ;;{{{ CSS mode
