@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <14/07/02 21:56>
+;; Time-stamp: <15/01/04 15:34>
 
 ;;{{{ Global Settings
 
@@ -428,6 +428,7 @@
   ;; default Latin font (e.g. Consolas)
   ;; (set-face-attribute 'default nil :family "Consolas")
   (set-face-attribute 'default nil :family "Monaco")
+  ;; (set-face-attribute 'default nil :family "Monofur")
   ;; default font size (point * 10)
   ;;
   ;; WARNING!  Depending on the default font,
@@ -560,7 +561,7 @@
 
 (defvar anything-c-headline
   '((name . "C Headline")
-    (headline  "^[A-Za-z_]+?[ A-Za-z_0-9\*]+[A-Za-z_0-9]+?(\\|FIXME")
+    (headline  "^[A-Za-z_]+?[ A-Za-z_0-9\*]+[A-Za-z_0-9]+? ?+(\\|FIXME")
 ))
 
 (defvar anything-cpp-headline
@@ -750,12 +751,11 @@
 
 ;;}}}
 ;;{{{ lisp mode
-;;(add-to-list 'load-path "~/.emacs.d/slime/")
-;;(add-to-list 'load-path "~/.elisp/slime-2013-02-23/")
-;;(setq inferior-lisp-program "/usr/local/bin/sbcl")
-;;(require 'slime-autoloads)
-;;(setq slime-net-coding-system 'utf-8-unix)
-;;(slime-setup '(slime-fancy))
+(add-to-list 'load-path "~/repos/slime/")
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
+(require 'slime-autoloads)
+(setq slime-net-coding-system 'utf-8-unix)
+(slime-setup '(slime-fancy))
 
 ;; SLIME & Swank
 ;; (loadlib "swank")
@@ -765,16 +765,13 @@
 ;; (Your-Project:start-server)
 
 (autoload 'glsl-mode "glsl-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
 
 ;;}}}
 ;;{{{ CSS mode
-
-(autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
-
-(setq auto-mode-alist
-      (append '(("\\.css$" . css-mode))
-              auto-mode-alist))
+;; (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
+;; (setq auto-mode-alist
+;;       (append '(("\\.css$" . css-mode))
+;;               auto-mode-alist))
 
 ;;}}}
 ;;{{{ Lua mode
@@ -921,13 +918,13 @@
 
 ;; maxima
 ;;
-(add-to-list 'load-path
-             (expand-file-name "D:/Program Files/Maxima-5.18.1/share/maxima/5.18.1/emacs"))
-(autoload 'maxima-mode "maxima" "Maxima mode" t)
-(autoload 'maxima "maxima" "Maxima interaction" t)
-(setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
-(if (string-equal system-type "windows-nt")
-  (setq maxima-command "D:/Program Files/Maxima-5.18.1/bin/maxima.bat"))
+;; (add-to-list 'load-path
+;;              (expand-file-name "D:/Program Files/Maxima-5.18.1/share/maxima/5.18.1/emacs"))
+;; (autoload 'maxima-mode "maxima" "Maxima mode" t)
+;; (autoload 'maxima "maxima" "Maxima interaction" t)
+;; (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
+;; (if (string-equal system-type "windows-nt")
+;;   (setq maxima-command "D:/Program Files/Maxima-5.18.1/bin/maxima.bat"))
 
 ;;}}}
 ;;{{{ Emacs-Wiki 
