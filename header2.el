@@ -575,7 +575,8 @@ Without this, `make-revision' inserts `header-history-label' after the header."
         beg end nb-lines)
     (beginning-of-line)
     (if comment-end-p
-        (insert "\n" comment-start)
+;;        (insert "\n" comment-start)
+        (insert comment-start)
       (header-blank)
       (insert header-prefix-string))
     (setq beg (point))

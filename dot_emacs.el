@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <15/01/04 15:34>
+;; Time-stamp: <15/01/18 13:59>
 
 ;;{{{ Global Settings
 
@@ -126,47 +126,11 @@
 ;; header2 support, auto insert or update file headers
 ;; 
 (require 'header2)
-(setq header-copyright-notice
-      (format-time-string "Copyright (c) %Y chale.suu@gmail.com \n")
-      user-full-name
-      " lalawue"
-      header-date-format
-      "%Y/%m/%d %H:%M")
-
-;; header layout
-;; 
-(setq make-header-hook
-      '(header-title
-        header-blank
-
-        header-copyright
-        header-blank
-
-        header-author
-        header-maintainer
-        header-blank
-
-        header-creation-date
-        header-modification-date
-        header-blank
-
-        ;; header-rcs-id
-        header-end-line
-
-        header-commentary
-        header-blank
-        header-blank
-        header-end-line
-
-        header-code
-        header-eof))
-
-(progn
-  (register-file-header-action "[ \t]Last Modified On[ \t]*: "
-                               'update-last-modified-date)
-  (register-file-header-action "[ \t]Last Modified On[ \t]*: "
-                               'update-last-modified-date))
-(add-hook 'write-file-hooks 'auto-update-file-header)
+(setq header-free-software
+      (format-time-string "\nCopyright (c) %Y lalawue\n
+This library is free software; you can redistribute it and/or modify it
+under the terms of the MIT license. See LICENSE for details."))
+(setq make-header-hook '(header-free-software))
 
 ;; 
 ;; Global and Common Key biding
