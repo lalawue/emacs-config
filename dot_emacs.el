@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <15/01/18 13:59>
+;; Time-stamp: <15/03/26 00:10>
 
 ;;{{{ Global Settings
 
@@ -412,18 +412,9 @@ under the terms of the MIT license. See LICENSE for details."))
 
 (setq auto-mode-alist (cons '("\\.mm$" . c++-mode) auto-mode-alist))
 
-;; 
 ;; Styles 
-;; 
-
-(setq c-default-style "linux")
 (setq-default indent-tabs-mode nil)
-(setq-default c-basic-offset 4
-              tab-width 4)              ; no tab, only blank
-(c-set-offset 'case-label 4)
-;; (setq tab-stop-list ())
-
-
+(setq c-default-style "ellemtel")
 
 ;; 
 ;; Tag Browsing and Completions settings
@@ -950,19 +941,6 @@ under the terms of the MIT license. See LICENSE for details."))
        ("muse" lambda (tag) (emacs-wiki-project-interwiki-link "muse" tag))
        ("scratch" lambda (tag) (emacs-wiki-project-interwiki-link "scratch" tag))
        ("slack" lambda (tag) (emacs-wiki-project-interwiki-link "slack" tag))
-       ("JournalWiki" lambda (tag) (emacs-wiki-project-interwiki-link "JournalWiki" tag))
-       ("GnuEmacs" . "http://www.gnu.org/software/emacs/emacs.html")
-       ("TheEmacsWiki" lambda (tag)
-        (concat "http://www.emacswiki.org/cgi-bin/wiki/" 
-                (or tag "SiteMap")))
-       ("MeatballWiki" lambda (tag)
-        (concat "http://www.usemod.com/cgi-bin/mb.pl?" (or tag "MeatballWiki")))
-       ;; Sites
-       ;; 
-       ("EmacsWikiProject" . "http://mwolson.org/projects/EmacsWikiMode.html") ;; Emacs Wiki
-       ("EmacsMuse" . "http://mwolson.org/projects/EmacsMuse.html") ;; Emacs Muse
-       ("HFUTBBS" . "http://www.hfutbbs.com")      ;; HFUT BBS
-       ("LinuxForum" . "http://www.linuxforum.net/") ;; Linuxforum
        ;; subdirectories
        ;; 
        ("code" . "../code/")                   ;; code directory
