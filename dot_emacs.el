@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <15/03/26 00:10>
+;; Time-stamp: <17/12/02 11:55>
 
 ;;{{{ Global Settings
 
@@ -8,10 +8,10 @@
 ;; 
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(auto-compression-mode t nil (jka-compr))
  '(auto-image-file-mode t)
  '(auto-save-timeout 30)
@@ -57,7 +57,7 @@
  '(tool-bar-mode nil)
  '(transient-mark-mode t)
  '(uniquify-buffer-name-style t)
- '(visible-bell t)
+ '(visible-bell nil)
  '(safe-local-variable-values (quote ((todo-categories "Todo")))))
 
 ;; 
@@ -73,8 +73,7 @@
  
  '(default ((t (:stipple nil :background "darkslategrey" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
  '(cursor ((t (:background "yellow2" :foreground "black"))) t)
- ;; '(fringe ((((class color) (background dark)) (:background "black" :foreground "gray35"))))
- '(fringe ((((class color) (background darkslategrey)) (:background "darkslategrey" :foreground "gray60"))))
+ '(fringe ((t (:background "dark slate gray"))))
  '(hl-line ((t (:background "grey13"))))
  '(mode-line ((((type x w32 mac) (class color)) (:background "black" :foreground "gray45"))))
  ;; '(mode-line-inactive ((default (:background "black" :foreground "gray33")) (((class color) (min-colors 88) (background dark)) nil)))
@@ -159,8 +158,8 @@ under the terms of the MIT license. See LICENSE for details."))
                           'hi-blue)))
 
 (global-set-key [(meta f8)] (lambda ()
-							  (interactive)
-							  (hi-lock-mode nil)))
+                              (interactive)
+                              (hi-lock-mode nil)))
 
 ;; call global macro
 (global-set-key [(f7)] 'call-last-kbd-macro)
@@ -379,7 +378,7 @@ under the terms of the MIT license. See LICENSE for details."))
 
       (set-file-name-coding-system 'gbk) ; local coding
       (set buffer-file-coding-system 'utf-8-unix)
-;;      (w32-send-sys-command #xf030)     ; maxmize windows
+      ;;      (w32-send-sys-command #xf030)     ; maxmize windows
       )))
   )
 
@@ -512,22 +511,22 @@ under the terms of the MIT license. See LICENSE for details."))
 (defvar anything-objc-headline
   '((name . "Objective-C Headline")
     (headline  "^[-+@]\\|^#pragma mark\\|FIXME")
-))
+    ))
 
 (defvar anything-c-headline
   '((name . "C Headline")
     (headline  "^[A-Za-z_]+?[ A-Za-z_0-9\*]+[A-Za-z_0-9]+? ?+(\\|FIXME")
-))
+    ))
 
 (defvar anything-cpp-headline
   '((name . "Cpp Headline")
     (headline  "^[A-Za-z_]+?[ A-Za-z_:~0-9\*]+[A-Za-z_0-9]+?(\\|FIXME")
-))
+    ))
 
 (defvar anything-lua-headline
   '((name . "Lua Headline")
     (headline  "^local \\|^function \\|[A-Za-z]+?[A-Za-z0-9_.] +\{\\|FIXME")
-))
+    ))
 
 (defun major-mode-headline ()
   (interactive)
@@ -617,25 +616,25 @@ under the terms of the MIT license. See LICENSE for details."))
  t)
 
 (defun sucha-smart-compile ()
-    "Simply compile your file according to the file type."
-    (interactive)
-    (save-some-buffers t)
-    (let
-        ((compile-command nil)
-         (alist
-          (list '("\\.c$" .  "gcc")
-                '("\\.cc$" . "g++")
-                '("\\.cpp$" . "g++"))))
-      (while (not (null alist))
-        (if (string-match (caar alist) (buffer-file-name))
-            (setq compile-command
-                  (concat (cdar alist) " " (buffer-file-name))))
-        (setq alist (cdr alist)))
-
-      (if (null compile-command)
+  "Simply compile your file according to the file type."
+  (interactive)
+  (save-some-buffers t)
+  (let
+      ((compile-command nil)
+       (alist
+        (list '("\\.c$" .  "gcc")
+              '("\\.cc$" . "g++")
+              '("\\.cpp$" . "g++"))))
+    (while (not (null alist))
+      (if (string-match (caar alist) (buffer-file-name))
           (setq compile-command
-                (read-from-minibuffer "Compile command: ")))
-      (compile compile-command)))
+                (concat (cdar alist) " " (buffer-file-name))))
+      (setq alist (cdr alist)))
+
+    (if (null compile-command)
+        (setq compile-command
+              (read-from-minibuffer "Compile command: ")))
+    (compile compile-command)))
 
 ;;}}}
 ;;{{{ Emacs-Lisp mode stuff
@@ -706,16 +705,16 @@ under the terms of the MIT license. See LICENSE for details."))
 
 ;;}}}
 ;;{{{ lisp mode
-(add-to-list 'load-path "~/repos/slime/")
-(setq inferior-lisp-program "/usr/local/bin/sbcl")
-(require 'slime-autoloads)
-(setq slime-net-coding-system 'utf-8-unix)
-(slime-setup '(slime-fancy))
+;; (add-to-list 'load-path "~/repos/slime/")
+;; (setq inferior-lisp-program "/usr/local/bin/sbcl")
+;; (require 'slime-autoloads)
+;; (setq slime-net-coding-system 'utf-8-unix)
+;; (slime-setup '(slime-fancy))
 
 ;; SLIME & Swank
 ;; (loadlib "swank")
 ;; (swank:create-server :port 4006 :style :spawn :dont-close t)
- 
+
 ;; (loadlib "Your-Project")
 ;; (Your-Project:start-server)
 
@@ -796,8 +795,8 @@ under the terms of the MIT license. See LICENSE for details."))
 (require 'fiplr)
 (setq fiplr-root-markers '(".git" ".svn"))
 (setq fiplr-ignored-globs 
-    '((directories (".git" ".svn"))
-      (files ("*.jpg" "*.png" "*.zip" "*~"))))
+      '((directories (".git" ".svn"))
+        (files ("*.jpg" "*.png" "*.zip" "*~"))))
 (global-set-key (kbd "C-x f") 'fiplr-find-file)
 
 
@@ -1135,11 +1134,6 @@ under the terms of the MIT license. See LICENSE for details."))
 ;;}}}
 ;;{{{ Desktop and Session
 
-;; record the open file history and defines the relative topic files
-;; 
-;;(require 'history)
-;;(setq history-file "~/.emacs.d/_emacs-history.el")
-;;(setq project-file "~/.emacs.d/_emacs-projects.el")
 
 ;; record the last working files
 ;; 
