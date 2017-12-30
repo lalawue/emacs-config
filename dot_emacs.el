@@ -1,5 +1,5 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <17/12/02 11:55>
+;; Time-stamp: <17/12/10 14:48>
 
 ;;{{{ Global Settings
 
@@ -421,16 +421,6 @@ under the terms of the MIT license. See LICENSE for details."))
 
 ;; tag modes
 ;; 
-
-;; yasnippet
-(add-to-list 'load-path "~/.elisp/yasnippet")
-(require 'yasnippet)
-(setq yas/trigger-key (kbd "C-c <kp-multiply>"))
-;;(yas/initialize)
-
-;; This is where your snippets will lie.
-(setq yas/root-directory '("~/.emacs.d/snippets"))
-;; (mapc 'yas/load-directory yas/root-directory)
 
 ;; auto-complete
 (add-to-list 'load-path (expand-file-name "~/.elisp/auto-complete"))
