@@ -1,11 +1,18 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <17/12/10 14:48>
+;; Time-stamp: <17/12/30 11:49>
 
 ;;{{{ Global Settings
 
 ;; 
 ;; Global Variable
 ;; 
+
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -694,29 +701,9 @@ under the terms of the MIT license. See LICENSE for details."))
 
 
 ;;}}}
-;;{{{ lisp mode
-;; (add-to-list 'load-path "~/repos/slime/")
-;; (setq inferior-lisp-program "/usr/local/bin/sbcl")
-;; (require 'slime-autoloads)
-;; (setq slime-net-coding-system 'utf-8-unix)
-;; (slime-setup '(slime-fancy))
-
-;; SLIME & Swank
-;; (loadlib "swank")
-;; (swank:create-server :port 4006 :style :spawn :dont-close t)
-
-;; (loadlib "Your-Project")
-;; (Your-Project:start-server)
-
-(autoload 'glsl-mode "glsl-mode" nil t)
-
-;;}}}
-;;{{{ CSS mode
-;; (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
-;; (setq auto-mode-alist
-;;       (append '(("\\.css$" . css-mode))
-;;               auto-mode-alist))
-
+;;{{{ Go Lang Mode
+(require 'go-mode)
+(setq auto-mode-alist (cons '("\\.go$" . go-mode) auto-mode-alist))
 ;;}}}
 ;;{{{ Lua mode
 ;; lua mode
@@ -856,21 +843,7 @@ under the terms of the MIT license. See LICENSE for details."))
 (global-set-key (kbd "C-x w") 'delete-window)
 
 ;;}}}
-;;{{{ My Temp attempt
 
-;;(require 'thumbs)			; thumbs.el
-
-;; maxima
-;;
-;; (add-to-list 'load-path
-;;              (expand-file-name "D:/Program Files/Maxima-5.18.1/share/maxima/5.18.1/emacs"))
-;; (autoload 'maxima-mode "maxima" "Maxima mode" t)
-;; (autoload 'maxima "maxima" "Maxima interaction" t)
-;; (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
-;; (if (string-equal system-type "windows-nt")
-;;   (setq maxima-command "D:/Program Files/Maxima-5.18.1/bin/maxima.bat"))
-
-;;}}}
 ;;{{{ Emacs-Wiki 
 
 (when (or (string-equal system-type "windows-nt")
