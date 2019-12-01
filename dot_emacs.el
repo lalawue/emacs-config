@@ -1,19 +1,22 @@
 ;; Sucha's emacs settings
-;; Time-stamp: <17/12/30 11:49>
+;; Time-stamp: <19/12/01 13:57>
 
-;;{{{ Global Settings
-
-;; 
-;; Global Variable
-;; 
-
-
+;;{{{ Packages
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
+(setq package-archives
+      '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+        ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 (package-initialize)
-
+(custom-set-variables
+ '(package-selected-packages 'go-mode))
+;;}}}
+;;{{{ Global Settings
+;; 
+;; Global Variable
+;; 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -23,7 +26,7 @@
  '(auto-image-file-mode t)
  '(auto-save-timeout 30)
  '(browse-url-browser-function (quote w3m-browse-url))
- '(c-default-style "k&r")
+ '(c-default-style "k&r" t)
  '(case-fold-search t)
  '(column-number-mode t)
  '(confirm-kill-emacs (quote y-or-n-p))
@@ -34,7 +37,6 @@
  '(display-time-interval 60)
  '(display-time-mail-string "mail")
  '(display-time-mode t)
- '(time-stamp-format "%02y/%02m/%02d %02H:%02M")
  '(display-time-use-mail-icon nil)
  '(fill-column 72)
  '(global-font-lock-mode t nil (font-lock))
@@ -45,8 +47,9 @@
  '(menu-bar-mode nil)
  '(message-default-charset (quote utf-8))
  '(message-send-mail-function (quote smtpmail-send-it))
- '(mouse-avoidance-mode (quote animate))
+ '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(require-final-newline nil)
+ '(safe-local-variable-values (quote ((todo-categories "Todo"))))
  '(scroll-bar-mode nil)
  '(scroll-conservatively 1000)
  '(scroll-margin 3)
@@ -61,11 +64,11 @@
  '(tags-case-fold-search nil)
  '(tags-loop-revert-buffers t)
  '(text-mode-hook (quote turn-on-auto-fill))
+ '(time-stamp-format "%02y/%02m/%02d %02H:%02M")
  '(tool-bar-mode nil)
  '(transient-mark-mode t)
- '(uniquify-buffer-name-style t)
- '(visible-bell nil)
- '(safe-local-variable-values (quote ((todo-categories "Todo")))))
+ '(uniquify-buffer-name-style t nil (uniquify))
+ '(visible-bell nil))
 
 ;; 
 ;; Global Faces
@@ -77,17 +80,21 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:stipple nil :background "black" :foreground "gray85" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
- 
- '(default ((t (:stipple nil :background "darkslategrey" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 155 :width normal :family "courier new"))))
- '(cursor ((t (:background "yellow2" :foreground "black"))) t)
+ '(cursor ((t (:background "yellow2" :foreground "black"))))
+ '(emacs-wiki-bad-link-face ((t (:foreground "coral" :weight bold))))
+ '(emacs-wiki-header-1 ((t (:inherit variable-pitch :weight bold :height 1.9))))
+ '(emacs-wiki-header-2 ((t (:inherit variable-pitch :weight bold :height 1.7))))
+ '(emacs-wiki-header-3 ((t (:inherit variable-pitch :weight bold :height 1.6))))
+ '(emacs-wiki-header-4 ((t (:inherit variable-pitch :slant italic :weight normal :height 1.3))))
+ '(emacs-wiki-header-5 ((t (:inherit variable-pitch :slant italic :weight normal :height 1.2))))
+ '(emacs-wiki-header-6 ((t (:inherit variable-pitch :slant italic :weight normal :height 1.2))))
+ '(emacs-wiki-link-face ((t (:foreground "cyan" :weight bold))))
  '(fringe ((t (:background "dark slate gray"))))
+ '(header-line ((default (:inherit mode-line)) (((class color grayscale) (background darkslategrey)) (:background "black" :foreground "grey40" :box nil))))
  '(hl-line ((t (:background "grey13"))))
  '(mode-line ((((type x w32 mac) (class color)) (:background "black" :foreground "gray45"))))
- ;; '(mode-line-inactive ((default (:background "black" :foreground "gray33")) (((class color) (min-colors 88) (background dark)) nil)))
  '(mode-line-inactive ((default (:background "darkslategrey" :foreground "gray55")) (((class color) (min-colors 88) (background darkslategrey)) nil)))
- '(region ((((class color) (background dark)) (:background "yellow4"))))
- '(header-line ((default (:inherit mode-line)) (((class color grayscale) (background darkslategrey)) (:background "black" :foreground "grey40" :box nil))))
- )
+ '(region ((((class color) (background dark)) (:background "yellow4")))))
 
 ;; 
 ;; Basic setting
@@ -102,12 +109,6 @@
 (add-hook 'before-save-hook 'time-stamp) ; load time-stamp
 
 (require 'fold)                         ; fold mode instead of folding
-;; (if (load "folding" 'nomessage 'noerror)
-;;     (folding-mode-add-find-file-hook))  ; folding mode
-
-;; open speedbar in current frame on the right
-;; 
-;; (require 'sr-speedbar)
 
 
 ;; popwin
@@ -347,48 +348,7 @@ under the terms of the MIT license. See LICENSE for details."))
 
 ;;}}}
 ;;{{{ System specific setting
-
 (require 'grep+)
-
-;; Font setting under windows
-(when (string-equal system-type "windows-nt")
-
-  ;; "Set defferent font for emacs version."
-  (let ((current-version
-         (string-to-number 
-          (substring (version) 10 12))))
-    (cond
-
-     ;; if emacs 22
-     ((= 22 current-version)
-      (if 
-          (not (member 
-                '("-*-courier new-normal-r-*-*-16-*-*-*-c-*-fontset-chinese"
-                  . "fontset-chinese") fontset-alias-alist))
-          (progn
-            (create-fontset-from-fontset-spec
-             "-*-monaco-normal-r-*-*-14-*-*-*-c-*-fontset-chinese,
-              chinese-gbk:-*-ÐÂËÎÌå-normal-r-*-*-14-*-*-*-c-*-gbk*-*,
-              chinese-gb2312:-*-ÐÂËÎÌå-normal-r-*-*-16-*-*-*-c-*-gb2312*-*,
-              chinese-big5-1:-*-MingLiU-normal-r-*-*-16-*-*-*-c-*-big5*-*,
-              chinese-big5-2:-*-MingLiU-normal-r-*-*-16-*-*-*-c-*-big5*-*" t)
-            (setq default-frame-alist
-                  (append
-                   '((font . "fontset-chinese"))
-                   default-frame-alist)))))
-
-     ;; if emacs 23
-     ((= 23 current-version)
-      
-      (load "fontset-win")
-      (huangq-fontset-monaco 13)
-
-      (set-file-name-coding-system 'gbk) ; local coding
-      (set buffer-file-coding-system 'utf-8-unix)
-      ;;      (w32-send-sys-command #xf030)     ; maxmize windows
-      )))
-  )
-
 
 (when (eq system-type 'darwin)
 
@@ -437,40 +397,6 @@ under the terms of the MIT license. See LICENSE for details."))
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
 
 (global-auto-complete-mode t)
-
-;; (require 'auto-complete-clang-async)
-;; (defun ac-cc-mode-setup ()
-;;   (setq ac-clang-complete-executable "/usr/local/Cellar/emacs-clang-complete-async/0.5/bin/clang-complete")
-;;   (setq-default ac-sources '(ac-source-abbrev
-;;                              ac-source-dictionary
-;;                              ac-source-words-in-same-mode-buffers
-;;                              ac-source-clang-async))
-;;   (ac-clang-launch-completion-process))
-;; (defun my-ac-config ()
-;;   (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-;;   (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-;;   (global-auto-complete-mode t))
-;; (my-ac-config)
-
-
-;; document viewer
-;; (add-to-list 'load-path (expand-file-name "~/.elisp/w3m/"))
-;; (add-to-list 'exec-path "/usr/local/bin")
-;; (require 'w3m)
-;; (require 'w3m-load)
-
-
-;; (require 'xcode-document-viewer)
-;; (setq xcdoc:document-path
-;;       "/Users/user/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.AppleiOS6.1.iOSLibrary.docset/")
-;; (setq xcdoc:open-w3m-other-buffer t)
-
-;; (defun xcdoc:docsetutil-command ()
-;;  (or (executable-find "docsetutil")
-;;      (and (file-executable-p "/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil")
-;;           "/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil")
-;;      (error "docsetutil command is not found. Perhaps you dont have Xcode man.")))
-
 
 ;; jump between source and header file
 (defun c-base-mode-in-header-file ()
@@ -703,7 +629,8 @@ under the terms of the MIT license. See LICENSE for details."))
 ;;}}}
 ;;{{{ Go Lang Mode
 (require 'go-mode)
-(setq auto-mode-alist (cons '("\\.go$" . go-mode) auto-mode-alist))
+(setq auto-mode-alist
+      (cons '("\\.go$" . go-mode) auto-mode-alist))
 ;;}}}
 ;;{{{ Lua mode
 ;; lua mode
@@ -843,260 +770,7 @@ under the terms of the MIT license. See LICENSE for details."))
 (global-set-key (kbd "C-x w") 'delete-window)
 
 ;;}}}
-
-;;{{{ Emacs-Wiki 
-
-(when (or (string-equal system-type "windows-nt")
-          (string-equal system-type "darwin"))
-
-  ;;load emacs-wiki 
-  ;; 
-  (add-to-list 'load-path "~/.elisp/emacs-wiki-2.72")
-  (require 'emacs-wiki)
-  (require ' htmlize)
-  ;; (require 'emacs-wiki-table)
-  ;; (require 'emacs-wiki-menu)
-  (require 'emacs-wiki-srctag)
-  (add-to-list 'emacs-wiki-src-tag-modes-alist
-               '("conf" . conf-mode))
-  (add-to-list 'emacs-wiki-src-tag-modes-alist
-               '("sh" . shell-script-mode))
-  (add-to-list 'emacs-wiki-src-tag-modes-alist
-               '("xml" . xml-mode))
-  (add-to-list 'emacs-wiki-src-tag-modes-alist
-               '("scheme" . scheme-mode))
-
-  ;; emacs-wiki-journal
-  ;; 
-  (add-to-list 'load-path "~/.elisp/emacs-wiki-journal")
-  (require 'emacs-wiki-journal)
-
-  ;; setting custom variab
-  ;; 
-  (custom-set-variables
-   '(emacs-wiki-anchor-on-word t)
-   '(emacs-wiki-index-page "WikiIndex")
-   '(emacs-wiki-journal-description "Lives and essay.")
-   '(emacs-wiki-journal-directory "~/workport/homepage/sources/blog")
-   '(emacs-wiki-journal-icons-subdirectory "../images")
-   '(emacs-wiki-journal-index-title-threshold t)
-   '(emacs-wiki-journal-publishing-directory "~/workport/homepage/publish/blog")
-   '(emacs-wiki-journal-rss-file-name "~/workport/homepage/publish/blog/rss.xml")
-   '(emacs-wiki-journal-rss-about-prefix "http://suchang.net/blog/")
-   '(emacs-wiki-journal-rss-link-prefix "http://suchang.net/blog/")
-   '(emacs-wiki-journal-self-link-name "Permalink")
-   ;;  '(emacs-wiki-journal-time-format "%-m月%-e日 周%a %R")
-   ;;  '(emacs-wiki-journal-time-format-category "%-m月%-e日 周%a %R")
-   '(emacs-wiki-journal-time-format nil) ; use user define time-format
-   '(emacs-wiki-journal-time-format-category nil) ; use user define time-format
-   '(emacs-wiki-journal-use-other-window nil)
-   '(emacs-wiki-journal-wiki "index")
-   '(emacs-wiki-charset-default "utf-8")
-   '(emacs-wiki-coding-default (quote utf-8))
-   '(emacs-wiki-create-backlinks t)
-   '(emacs-wiki-default-page "index")
-   '(emacs-wiki-interwiki-names
-     (quote
-      (("blog" lambda (tag) (emacs-wiki-project-interwiki-link "blog" tag))
-       ("cs" lambda (tag) (emacs-wiki-project-interwiki-link "cs" tag))
-       ("live" lambda (tag) (emacs-wiki-project-interwiki-link "live" tag))
-       ("muse" lambda (tag) (emacs-wiki-project-interwiki-link "muse" tag))
-       ("scratch" lambda (tag) (emacs-wiki-project-interwiki-link "scratch" tag))
-       ("slack" lambda (tag) (emacs-wiki-project-interwiki-link "slack" tag))
-       ;; subdirectories
-       ;; 
-       ("code" . "../code/")                   ;; code directory
-       ("doc" . "../doc/")                     ;; doc directory
-       ;; personal information
-       ;; 
-       ("EmailMe" . "mailto: suchaaa@gmail.com") ;; email
-       ("GuestBook" . "../Guestbook.html")       ;; guestbook
-       )))
-   '(emacs-wiki-directories 
-     (quote 
-      ("~/workport/homepage/sources/blog"
-       "~/workport/homepage/sources/cs"
-       "~/workport/homepage/sources/live"
-       "~/workport/homepage/sources/muse"
-       "~/workport/homepage/sources/scratch"
-       "~/workport/homepage/sources/slack"))
-     nil (emacs-wiki))
-   ;; '(emacs-wiki-footer-date-format "")
-   '(emacs-wiki-home-page "index")
-   '(emacs-wiki-home-project "homepage")
-   '(emacs-wiki-maintainer "mailto:suchaaa@gmail.com")
-   '(emacs-wiki-markup-nonexistent-link t)
-   '(emacs-wiki-mode-hook (quote
-                           (;; footnote-mode
-                            emacs-wiki-use-font-lock
-                            ;; footnote-mode
-                            outline-minor-mode)))
-   ;; blog, cs, live, muse, scratch, slack
-   ;; 
-   '(emacs-wiki-projects
-     (quote
-      (("blog" ;; blog
-        (emacs-wiki-directories "~/workport/homepage/sources/blog/")
-        (emacs-wiki-project-server-prefix . "../blog/")
-        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/blog/")
-        (emacs-wiki-home-page . "index")
-        (emacs-wiki-index-page . "WikiIndex")
-        (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.blog-header\")</lisp>")
-        (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.blog-footer\")</lisp>"))
-       ("cs" ;; small lab, or computer science
-        (emacs-wiki-directories "~/workport/homepage/sources/cs/")
-        (emacs-wiki-project-server-prefix . "../cs/")
-        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/cs/")
-        (emacs-wiki-home-page . "index")
-        (emacs-wiki-index-page . "WikiIndex")
-        (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
-        (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
-       ("live" ;; about my life
-        (emacs-wiki-directories "~/workport/homepage/sources/live/")
-        (emacs-wiki-project-server-prefix . "../live/")
-        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/live/")
-        (emacs-wiki-home-page . "index")
-        (emacs-wiki-index-page . "WikiIndex")
-        (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
-        (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
-       ("muse" ;; we need musing
-        (emacs-wiki-directories "~/workport/homepage/sources/muse/")
-        (emacs-wiki-project-server-prefix . "../muse/")
-        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/muse/")
-        (emacs-wiki-home-page . "index")
-        (emacs-wiki-index-page . "WikiIndex")
-        (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
-        (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
-       ("scratch" ;; scratch, draft, anything
-        (emacs-wiki-directories "~/workport/homepage/sources/scratch/")
-        (emacs-wiki-project-server-prefix . "../scratch/")
-        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/scratch/")
-        (emacs-wiki-home-page . "index")
-        (emacs-wiki-index-page . "WikiIndex")
-        (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
-        (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
-       ("slack" ;; here is Slackware
-        (emacs-wiki-directories "~/workport/homepage/sources/slack/")
-        (emacs-wiki-project-server-prefix . "../slack/")
-        (emacs-wiki-publishing-directory . "~/workport/homepage/publish/slack/")
-        (emacs-wiki-home-page . "index")
-        (emacs-wiki-index-page . "WikiIndex")
-        (emacs-wiki-publishing-header . "<lisp>(sucha-wiki-import-file \"../.site-header\")</lisp>")
-        (emacs-wiki-publishing-footer . "<lisp>(sucha-wiki-import-file \"../.site-footer\")</lisp>"))
-       )))
-   '(emacs-wiki-publish-url-coding-system (quote utf-8))
-   '(emacs-wiki-publishing-directory "~/workport/homepage/publish")
-   '(emacs-wiki-publishing-file-prefix "")
-   '(emacs-wiki-refresh-file-alist-p t)
-   '(emacs-wiki-show-project-name-p t)
-   '(emacs-wiki-use-mode-flags t)
-   '(emacs-wiki-xhtml-inline-css nil))
-
-  ;; setting custom faces
-  ;; 
-  (custom-set-faces
-   '(emacs-wiki-link-face ((t (:foreground "cyan" :weight bold))))
-   '(emacs-wiki-bad-link-face ((t (:foreground "coral" :weight bold))))
-   '(emacs-wiki-header-1 ((t (:inherit variable-pitch :weight bold :height 1.9))))
-   '(emacs-wiki-header-2 ((t (:inherit variable-pitch :weight bold :height 1.7))))
-   '(emacs-wiki-header-3 ((t (:inherit variable-pitch :weight bold :height 1.6))))
-   '(emacs-wiki-header-4 ((t (:inherit variable-pitch :slant italic :weight normal :height 1.3))))
-   '(emacs-wiki-header-5 ((t (:inherit variable-pitch :slant italic :weight normal :height 1.2))))
-   '(emacs-wiki-header-6 ((t (:inherit variable-pitch :slant italic :weight normal :height 1.2)))))
-
-  ;; emacs-wiki auto-publish, added my hack
-  ;; 
-  (defun sacha-emacs-wiki-auto-publish()
-    (when (derived-mode-p 'emacs-wiki-mode)
-      (unless emacs-wiki-publishing-p
-        (let ((emacs-wiki-publishing-p t)
-              (emacs-wiki-after-wiki-publish-hook nil)
-              (buffer-file-coding-system 'utf-8-unix))
-          (emacs-wiki-journal-publish-this-page)
-          ;;(emacs-wiki-publish-index)
-          ))))
-
-  (add-hook 'emacs-wiki-mode-hook
-            (lambda () (add-hook 'after-save-hook
-                                 'sacha-emacs-wiki-auto-publish
-                                 nil t)))
-
-  ;; time-format for entries' title and categorys' title
-  ;; 
-  (defun emacs-wiki-journal-user-definite-time-format ()
-    "If emacs-wiki-journal-time-format set to nil, it will 
-  display your own time string format in entries."
-    (format "%s年%s月%s日 %s %s"
-            (string-to-number (format-time-string "%-y"))
-            (string-to-number (format-time-string "%-m"))
-            (format-time-string "%-e")
-            (let
-                ((weekday (string-to-number
-                           (format-time-string "%u"))))
-              (cond 
-               ((= weekday 1) (concat "周一"))
-               ((= weekday 2) (concat "周二"))
-               ((= weekday 3) (concat "周三"))
-               ((= weekday 4) (concat "周四"))
-               ((= weekday 5) (concat "周五"))
-               ((= weekday 6) (concat "周六"))
-               ((= weekday 7) (concat "周日"))))
-            (format-time-string "%R")))
-
-  (defun emacs-wiki-journal-user-definite-format-category ()
-    "If emacs-wiki-journal-time-format-category set to nil, it 
-   will display your own time string format in category."
-    (format "%s月%s日 %s %s"
-            (string-to-number (format-time-string "%-m"))
-            (format-time-string "%-e")
-            (let
-                ((weekday (string-to-number
-                           (format-time-string "%u"))))
-              (cond 
-               ((= weekday 1) (concat "周一"))
-               ((= weekday 2) (concat "周二"))
-               ((= weekday 3) (concat "周三"))
-               ((= weekday 4) (concat "周四"))
-               ((= weekday 5) (concat "周五"))
-               ((= weekday 6) (concat "周六"))
-               ((= weekday 7) (concat "周日"))))
-            (format-time-string "%R")))
-
-
-  ;; import outer template file
-  ;; 
-  (defun sucha-wiki-import-file (file)
-    (if (file-readable-p file)
-        (ignore (insert-file-contents file))))
-
-  ;; from ChunYe Wang's Emacs tips
-  ;; 
-  (defun wcy-wiki-input-special-character ()
-    "Use to input special character."
-    (interactive)
-    (let* ((c (read-char "Character:"))
-           (x (emacs-wiki-escape-html-string (string c))))
-      (insert x)))
-
-  (define-key emacs-wiki-mode-map (kbd "C-c i") 'wcy-wiki-input-special-character)
-
-  ;; add something to my web blog anytime
-  ;; 
-  (global-set-key [(C-f12)] 'emacs-wiki-journal-add-entry)
-
-  ;; find wiki files
-  ;; 
-  (defun sucha-wiki-find-file ()
-    "Find the wiki file in wiki directorys"
-    (interactive)
-    (find-file (file-name-directory "~/workport/homepage/sources/")))
-
-  (global-set-key [(M-f12)] 'sucha-wiki-find-file)
-
-  )                                     ; windows-nt-special-setting
-;;}}}
 ;;{{{ Desktop and Session
-
 
 ;; record the last working files
 ;; 
